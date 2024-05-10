@@ -1,0 +1,29 @@
+.modalContainerOuter {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.399);
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainerInner {
+  min-width: 300px;
+  background-color: white;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.titleContainer h3 {
+  flex-grow: 1;
+}

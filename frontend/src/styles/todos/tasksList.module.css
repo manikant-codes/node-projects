@@ -1,0 +1,47 @@
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.taskListItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #e1f5fe;
+  padding: 16px;
+  border-radius: 16px;
+  border: solid 1px #b3e5fc;
+  cursor: pointer;
+}
+
+.taskListItem:hover {
+  background-color: white;
+}
+
+.task {
+  flex-grow: 1;
+}
+
+.actionBtn {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+}
+
+.actionDelete {
+  background-color: #e53935;
+  border: solid 1px #c62828;
+}
+
+.actionDelete:hover {
+  background-color: #c62828;
+  border: solid 1px #b71c1c;
+}

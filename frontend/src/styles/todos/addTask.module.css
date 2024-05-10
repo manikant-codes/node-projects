@@ -1,0 +1,26 @@
+.addTaskContainer {
+  padding: 32px 0px;
+  display: flex;
+  gap: 8px;
+}
+
+.taskInput {
+  padding: 8px 12px;
+  border: solid 1px #bdbdbd;
+  border-radius: 32px;
+  width: 100%;
+}
+
+.dateInput {
+  border-radius: 32px;
+  padding: 8px 12px;
+  border: solid 1px #bdbdbd;
+}
+
+.dateInput::-webkit-inner-spin-button,
+.dateInput::-webkit-calendar-picker-indicator {
+  font-size: 1.125rem;
+}
+.dateInput::-webkit-datetime-edit {
+  padding-right: 6px;
+}

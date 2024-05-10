@@ -1,0 +1,40 @@
+.navbar {
+  padding: 24px 32px;
+  background-color: #e1f5fe;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  height: 32px;
+}
+
+.logoContainer h1 {
+  /* margin: 0px; */
+}
+
+.links {
+  padding: 0px;
+  margin: 0px;
+  list-style-type: none;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.links li a {
+  color: black;
+  text-decoration: none;
+}
+
+.links li a:hover {
+  text-decoration: underline;
+}

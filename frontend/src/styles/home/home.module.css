@@ -1,0 +1,31 @@
+.homeHeroContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #b3e5fc;
+  height: calc(100vh - 83px - 73px);
+}
+
+.homeHeroTitleContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
+}
+
+.homeHeroTitleContainer h2 {
+  font-size: 3rem;
+}
+
+.homeHeroImgContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+}
+
+.homeHeroImgContainer img {
+  height: 100%;
+  width: 100%;
+}
