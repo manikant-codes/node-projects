@@ -8,6 +8,7 @@ import { deleteTask } from "../../services/apiServices";
 import { removeTaskFromState } from "../../helpers/tasksHelper";
 import Modal from "../common/Modal";
 import UpdateTaskForm from "./UpdateTaskForm";
+import FlowModal from "../common/FlowModal";
 
 function TaskListItem({ task, tasks, setTasks }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,10 +47,11 @@ function TaskListItem({ task, tasks, setTasks }) {
         </button>
       </li>
       {isOpen && (
-        <Modal
+        <FlowModal
           title="Update Task"
+          isOpen={isOpen}
           toggleModal={toggleModal}
-          content={<UpdateTaskForm task={task} />}
+          body={<UpdateTaskForm task={task} />}
         />
       )}
     </>

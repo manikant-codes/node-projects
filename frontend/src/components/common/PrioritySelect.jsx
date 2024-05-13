@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../styles/common/prioritySelect.module.css";
+import { Select } from "flowbite-react";
 
 function PrioritySelect({ selected, onChange }) {
   const [priority, setPriority] = useState(selected?.toLowerCase() || "a");
@@ -9,10 +10,11 @@ function PrioritySelect({ selected, onChange }) {
   }
 
   return (
-    <select
+    <Select
       name="priority"
       id="priority"
-      className={styles.prioritySelect}
+      className="[&>div>select]:rounded-full"
+      // className={styles.prioritySelect}
       value={priority}
       onChange={handleChange}
     >
@@ -20,7 +22,7 @@ function PrioritySelect({ selected, onChange }) {
       <option value="b">B</option>
       <option value="c">C</option>
       <option value="d">D</option>
-    </select>
+    </Select>
   );
 }
 
