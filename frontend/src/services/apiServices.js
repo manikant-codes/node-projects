@@ -13,3 +13,7 @@ export function addTask(data) {
 export function deleteTask(id) {
   return fetchHelper(`${BASE_URL}/tasks/${id}`, "DELETE");
 }
+
+export function updateTask(data) {
+  return fetchHelper(`${BASE_URL}/tasks/${data._id}`, "PATCH", data);
+}

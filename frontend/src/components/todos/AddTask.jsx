@@ -1,6 +1,6 @@
-import { faAdd } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, TextInput } from "flowbite-react";
 import React from "react";
+import { HiPlus } from "react-icons/hi";
 import { addTaskToState } from "../../helpers/tasksHelper";
 import { addTask } from "../../services/apiServices";
 import styles from "../../styles/todos/addTask.module.css";
@@ -21,7 +21,7 @@ function AddTask({ tasks, setTasks }) {
 
     const result = await addTask({
       task,
-      dueDate,
+      dueDate: new Date(dueDate),
       priority,
     });
 
@@ -36,12 +36,25 @@ function AddTask({ tasks, setTasks }) {
 
   return (
     <form className={styles.addTaskContainer} onSubmit={handleSubmit}>
-      <input name="task" type="text" className={styles.taskInput} />
-      <input name="dueDate" type="date" className={styles.dateInput} />
-      <PrioritySelect />
-      <button type="submit">
-        <FontAwesomeIcon icon={faAdd} /> Add Task
-      </button>
+      <TextInput
+        name="task"
+        type="text"
+        className="grow-[1] [&>div>input]:!rounded-full"
+      />
+      <TextInput
+        name="dueDate"
+        type="date"
+        className="[&>div>input]:!rounded-full"
+      />
+      <PrioritySelect className="shrink-0 [&>div>select]:!rounded-full" />
+      <Button
+        pill
+        type="submit"
+        className="shrink-0"
+        gradientDuoTone="greenToBlue"
+      >
+        <HiPlus className="h-5 w-5 mr-2" /> Add Task
+      </Button>
     </form>
   );
 }

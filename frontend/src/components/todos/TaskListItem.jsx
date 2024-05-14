@@ -1,14 +1,16 @@
-import React, { useState } from "react";
-import styles from "../../styles/todos/tasksList.module.css";
-import PrioritySelect from "../common/PrioritySelect";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
-import { deleteTask } from "../../services/apiServices";
-import { removeTaskFromState } from "../../helpers/tasksHelper";
-import Modal from "../common/Modal";
-import UpdateTaskForm from "./UpdateTaskForm";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import {
+  removeTaskFromState,
+  updateTaskInState,
+} from "../../helpers/tasksHelper";
+import { deleteTask, updateTask } from "../../services/apiServices";
+import styles from "../../styles/todos/tasksList.module.css";
 import FlowModal from "../common/FlowModal";
+import PrioritySelect from "../common/PrioritySelect";
+import UpdateTaskForm from "./UpdateTaskForm";
 
 function TaskListItem({ task, tasks, setTasks }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,10 +28,22 @@ function TaskListItem({ task, tasks, setTasks }) {
     toggleModal();
   }
 
+  async function handleCheckChange(e) {
+    const updatedTask = await updateTask({
+      ...task,
+      isCompleted: e.target.checked,
+    });
+    updateTaskInState(updatedTask.data, tasks, setTasks);
+  }
+
   return (
     <>
       <li className={styles.taskListItem}>
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          checked={task.isCompleted}
+          onChange={handleCheckChange}
+        />
         <p className={styles.task}>{task.task}</p>
         <p>{task.dueDate}</p>
         <PrioritySelect selected={task.priority} />
@@ -51,7 +65,14 @@ function TaskListItem({ task, tasks, setTasks }) {
           title="Update Task"
           isOpen={isOpen}
           toggleModal={toggleModal}
-          body={<UpdateTaskForm task={task} />}
+          body={
+            <UpdateTaskForm
+              task={task}
+              tasks={tasks}
+              setTasks={setTasks}
+              toggleModal={toggleModal}
+            />
+          }
         />
       )}
     </>
