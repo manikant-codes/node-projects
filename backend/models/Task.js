@@ -11,6 +11,7 @@ const taskSchema = new mongoose.Schema({
   isCompleted: { type: Boolean, default: false },
   priority: { type: String, enum: ["a", "b", "c", "d"], default: "D" },
   dueDate: Date,
+  userId: { type: mongoose.Types.ObjectId, ref: "User" },
 });
 
 // const taskModel = mongoose.model("Task", taskSchema);

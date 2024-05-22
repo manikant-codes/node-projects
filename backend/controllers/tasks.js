@@ -2,9 +2,11 @@ const Task = require("../models/Task");
 
 const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({});
+    console.log("tasks", tasks);
     res.status(200).json({ success: true, data: tasks });
   } catch (error) {
+    console.log("error", error);
     res.status(500).json({ success: false, msg: "Failed to fetch tasks!" });
   }
 };
