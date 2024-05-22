@@ -12,7 +12,7 @@ router.get("/", getAllUsers);
 
 router.get("/:id", getSingleUser);
 
-router.post("/", addUser);
+// router.post("/", addUser);
 
 router.patch("/:id", updateUser);
 

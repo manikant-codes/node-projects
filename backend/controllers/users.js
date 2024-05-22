@@ -21,21 +21,21 @@ const getSingleUser = async (req, res) => {
   }
 };
 
-const addUser = async (req, res) => {
-  try {
-    let objUser = { ...req.body };
+// const addUser = async (req, res) => {
+//   try {
+//     let objUser = { ...req.body };
 
-    const numberOfUsers = await User.countDocuments();
+//     const numberOfUsers = await User.countDocuments();
 
-    if (numberOfUsers === 0) {
-      objUser.role = "admin";
-    }
-    const user = await User.create(objUser);
-    res.status(200).json({ success: true, data: user });
-  } catch (error) {
-    res.status(500).json({ success: false, msg: error.message });
-  }
-};
+//     if (numberOfUsers === 0) {
+//       objUser.role = "admin";
+//     }
+//     const user = await User.create(objUser);
+//     res.status(200).json({ success: true, data: user });
+//   } catch (error) {
+//     res.status(500).json({ success: false, msg: error.message });
+//   }
+// };
 
 const updateUser = async (req, res) => {
   try {
@@ -79,7 +79,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
   getAllUsers,
   getSingleUser,
-  addUser,
+  // addUser,
   updateUser,
   deleteUser,
 };
