@@ -1,3 +1,4 @@
+const { generateToken, getUserObject } = require("../helpers/authHelper");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
@@ -13,13 +14,11 @@ const register = async (req, res) => {
 
     const user = await User.create(objUser);
 
-    const token = jwt.sign({ userId: user._id }, "secret", {
-      expiresIn: "24h",
-    });
+    const token = generateToken(user);
 
     res.status(200).json({
       success: true,
-      data: { userId: user._id, username: user.username, email: user.email },
+      data: getUserObject(user),
       token,
     });
   } catch (error) {
@@ -43,21 +42,15 @@ const login = async (req, res) => {
 
     if (!isPasswordCorrect) {
       return res
-        .status(401)
+        .status(400)
         .json({ success: false, msg: "Incorrect password!" });
     }
 
-    const token = jwt.sign({ userId: existingUser._id }, "secret", {
-      expiresIn: "24h",
-    });
+    const token = generateToken(existingUser);
 
     res.status(200).json({
       success: true,
-      data: {
-        userId: existingUser._id,
-        username: existingUser.username,
-        email: existingUser.email,
-      },
+      data: getUserObject(existingUser),
       token,
     });
   } catch (error) {
@@ -65,7 +58,24 @@ const login = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {};
+const logout = async (req, res) => {
+  try {
+    let token = req.headers.authorization;
+    token = token && token.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, msg: "No token provided!" });
+    }
+
+    const user = jwt.verify(token, "secret");
+
+    res.status(200).json({ success: true, msg: "Logged out successfully!" });
+  } catch (error) {
+    res.status(500).json({ success: false, msg: error.message });
+  }
+};
 
 module.exports = {
   register,
