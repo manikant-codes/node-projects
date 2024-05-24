@@ -1,5 +1,6 @@
 const { generateToken, getUserObject } = require("../helpers/authHelper");
 const User = require("../models/User");
+const Token = require("../models/Token");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
@@ -60,16 +61,8 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    let token = req.headers.authorization;
-    token = token && token.split(" ")[1];
-
-    if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, msg: "No token provided!" });
-    }
-
-    const user = jwt.verify(token, "secret");
+    const token = req.headers.authorization.split(" ")[1];
+    await Token.create({ token });
 
     res.status(200).json({ success: true, msg: "Logged out successfully!" });
   } catch (error) {
