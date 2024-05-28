@@ -1,5 +1,6 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Register() {
   const [state, setState] = useState(0);
@@ -46,6 +47,10 @@ function Register() {
           </div>
         </div>
         <Button type="submit">Submit</Button>
+        <p className="text-center">OR</p>
+        <Link to="/login" className="text-center">
+          Login
+        </Link>
       </form>
     </div>
   );

@@ -4,18 +4,29 @@ import Home from "./pages/Home";
 import Todos from "./pages/Todos";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AuthProvider from "./providers/AuthProvider";
+import AuthGuard from "./guards/AuthGuard";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="admin/todos" element={<Todos />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route
+              path="admin/todos"
+              element={
+                <AuthGuard>
+                  <Todos />
+                </AuthGuard>
+              }
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

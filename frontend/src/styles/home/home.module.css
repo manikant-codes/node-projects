@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   background-color: #b3e5fc;
-  height: calc(100vh - 83px - 73px);
+  height: calc(100vh - 80px - 72px);
 }
 
 .homeHeroTitleContainer {
