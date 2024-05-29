@@ -1,12 +1,32 @@
 import { Button, Label, TextInput } from "flowbite-react";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../providers/AuthProvider";
 
 function Register() {
-  const [state, setState] = useState(0);
+  const { register } = useAuth();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (e.target["password"].value !== e.target["confirmPassword"].value) {
+      alert("Passwords did not match!");
+      return;
+    }
+
+    const data = {};
+    data.username = e.target["username"].value;
+    data.email = e.target["email"].value;
+    data.password = e.target["password"].value;
+
+    register(data);
+  }
 
   return (
-    <div className="h-[calc(100vh-72px-80px)] flex items-center justify-center">
+    <div
+      className="h-[calc(100vh-72px-80px)] flex items-center justify-center"
+      onSubmit={handleSubmit}
+    >
       <form className="bg-cyan-100 p-8 rounded-lg min-w-[300px] flex max-w-md flex-col gap-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div className="">
@@ -15,6 +35,7 @@ function Register() {
             </div>
             <TextInput
               id="username"
+              name="username"
               type="text"
               placeholder="John Doe"
               required
@@ -27,6 +48,7 @@ function Register() {
             <TextInput
               id="email1"
               type="email"
+              name="email"
               placeholder="name@flowbite.com"
               required
             />
@@ -37,13 +59,18 @@ function Register() {
             <div className="mb-2 block">
               <Label htmlFor="password" value="Your password" />
             </div>
-            <TextInput id="password" type="password" required />
+            <TextInput id="password" name="password" type="password" required />
           </div>
           <div>
             <div className="mb-2 block">
               <Label htmlFor="confirm-password" value="Confirm password" />
             </div>
-            <TextInput id="confirm-password" type="password" required />
+            <TextInput
+              id="confirm-password"
+              name="confirmPassword"
+              type="password"
+              required
+            />
           </div>
         </div>
         <Button type="submit">Submit</Button>

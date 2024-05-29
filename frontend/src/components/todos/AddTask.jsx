@@ -7,6 +7,8 @@ import styles from "../../styles/todos/addTask.module.css";
 import PrioritySelect from "../common/PrioritySelect";
 
 function AddTask({ tasks, setTasks }) {
+  // console.log("user", user);
+
   async function handleSubmit(e) {
     e.preventDefault();
 

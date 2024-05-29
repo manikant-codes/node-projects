@@ -27,7 +27,7 @@ function AuthProvider({ children }) {
     const result = await registerUser(data);
     localStorage.setItem("user", JSON.stringify(result));
     setUser(result.data);
-    navigate("/admin/Ttodos");
+    navigate("/admin/todos");
   }
 
   async function logout() {
