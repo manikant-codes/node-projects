@@ -37,3 +37,11 @@ export function logoutUser() {
 }
 
 // End Auth
+
+// Dashboard
+
+export function getTasksStats() {
+  return fetchHelper(`${BASE_URL}/dashboard/stats`, true);
+}
+
+// End Dashboard

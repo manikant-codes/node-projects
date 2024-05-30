@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       minLength: 2,
       maxLength: 50,
-      unique: true,
     },
     email: {
       type: String,
@@ -24,7 +23,7 @@ const userSchema = new mongoose.Schema(
       ],
       unique: [true, "Email must be unique!"],
     },
-    password: { type: String, minLength: 4, maxLength: 8, required: true },
+    password: { type: String, required: true },
     isActive: { type: Boolean, default: true },
     role: { type: String, enum: ["user", "admin"], default: "user" },
     theme: {

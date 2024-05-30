@@ -6,6 +6,7 @@ const cors = require("cors");
 const tasksRouter = require("./routes/tasks");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const dashboardRouter = require("./routes/dashboard");
 const connect = require("./db/connect");
 
 app.use(cors());
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/tasks", tasksRouter);
+app.use("/dashboard", dashboardRouter);
 
 app.get("*", (req, res) => {
   res.send("Path doen't exist!");
