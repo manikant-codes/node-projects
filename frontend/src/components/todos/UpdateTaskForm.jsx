@@ -45,7 +45,7 @@ function UpdateTaskForm({ task, toggleModal, tasks, setTasks }) {
         onSelectedDateChanged={handleChange}
       />
       <PrioritySelect selected={formState.priority} onChange={handleChange} />
-      <Button pill gradientDuoTone="greenToBlue" type="submit">
+      <Button pill gradientDuoTone="purpleToBlue" type="submit">
         Submit
       </Button>
     </form>

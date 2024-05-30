@@ -7,7 +7,7 @@ import { useAuth } from "../providers/AuthProvider";
 function Navbar() {
   const { logout, user } = useAuth();
   return (
-    <nav className={styles.navbar}>
+    <nav className={styles.navbar + " "}>
       <div className={styles.logoContainer}>
         <img src="/images/logo.svg" alt="" className={styles.logo} />
         <h1>Todos</h1>
@@ -28,7 +28,9 @@ function Navbar() {
 
         {user && (
           <li>
-            <Button onClick={logout}>Logout</Button>
+            <Button onClick={logout} pill gradientDuoTone="purpleToBlue">
+              Logout
+            </Button>
           </li>
         )}
       </ul>

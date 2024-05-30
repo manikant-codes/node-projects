@@ -27,7 +27,7 @@ function Register() {
       className="h-[calc(100vh-72px-80px)] flex items-center justify-center"
       onSubmit={handleSubmit}
     >
-      <form className="bg-cyan-100 p-8 rounded-lg min-w-[300px] flex max-w-md flex-col gap-4">
+      <form className="bg-slate-50 border-2 p-8 rounded-lg min-w-[300px] flex max-w-md flex-col gap-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div className="">
             <div className="mb-2 block">
@@ -73,7 +73,9 @@ function Register() {
             />
           </div>
         </div>
-        <Button type="submit">Submit</Button>
+        <Button gradientDuoTone="purpleToBlue" type="submit">
+          Submit
+        </Button>
         <p className="text-center">OR</p>
         <Link to="/login" className="text-center">
           Login

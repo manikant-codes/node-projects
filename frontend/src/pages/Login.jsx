@@ -16,7 +16,7 @@ function Login() {
   return (
     <div className="h-[calc(100vh-72px-80px)] flex items-center justify-center">
       <form
-        className="bg-cyan-100 p-8 rounded-lg min-w-[300px] flex max-w-md flex-col gap-4"
+        className="bg-slate-50 border-2 p-8 rounded-lg min-w-[300px] flex max-w-md flex-col gap-4"
         onSubmit={handleSubmit}
       >
         <div>
@@ -37,7 +37,9 @@ function Login() {
           </div>
           <TextInput id="password" type="password" name="password" required />
         </div>
-        <Button type="submit">Submit</Button>
+        <Button gradientDuoTone="purpleToBlue" type="submit">
+          Submit
+        </Button>
         <p className="text-center">OR</p>
         <Link className="text-center" to="/register">
           Register

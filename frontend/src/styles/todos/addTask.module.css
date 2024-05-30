@@ -1,5 +1,5 @@
 .addTaskContainer {
-  padding: 32px 0px;
+  padding-bottom: 32px;
   display: flex;
   gap: 8px;
 }

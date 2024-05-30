@@ -53,7 +53,7 @@ function AddTask({ tasks, setTasks }) {
         pill
         type="submit"
         className="shrink-0"
-        gradientDuoTone="greenToBlue"
+        gradientDuoTone="purpleToBlue"
       >
         <HiPlus className="h-5 w-5 mr-2" /> Add Task
       </Button>

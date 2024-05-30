@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import AuthProvider from "./providers/AuthProvider";
 import AuthGuard from "./guards/AuthGuard";
 import AdminLayout from "./layouts/AdminLayout";
+import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -23,6 +25,22 @@ function App() {
                 element={
                   <AuthGuard>
                     <Todos />
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="profile"
+                element={
+                  <AuthGuard>
+                    <Profile />
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="dashboard"
+                element={
+                  <AuthGuard>
+                    <Dashboard />
                   </AuthGuard>
                 }
               />

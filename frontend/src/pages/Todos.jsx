@@ -15,9 +15,12 @@ function Todos() {
   }, []);
 
   return (
-    <div className={styles.containerMain}>
-      <AddTask tasks={tasks} setTasks={setTasks} />
-      <TasksList tasks={tasks} setTasks={setTasks} />
+    <div className="p-8">
+      <h2 className="mb-4 text-2xl font-bold">Todos</h2>
+      <div className={styles.containerMain}>
+        <AddTask tasks={tasks} setTasks={setTasks} />
+        <TasksList tasks={tasks} setTasks={setTasks} />
+      </div>
     </div>
   );
 }
