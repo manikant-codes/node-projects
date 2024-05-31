@@ -45,3 +45,11 @@ export function getTasksStats() {
 }
 
 // End Dashboard
+
+// User
+
+export function updateUser(id, body) {
+  return fetchHelper(`${BASE_URL}/users/${id}`, true, "PATCH", body);
+}
+
+// End User

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { loginUser, logoutUser, registerUser } from "../services/apiServices";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { isExpired, decodeToken } from "react-jwt";
 import "react-toastify/dist/ReactToastify.css";
 
 const authContext = createContext();
@@ -11,8 +12,15 @@ export function useAuth() {
 }
 
 function AuthProvider({ children }) {
-  let initialUser = JSON.parse(localStorage.getItem("user"));
-  initialUser = initialUser && initialUser.data;
+  let initialUser = localStorage.getItem("token");
+  const isMyTokenExpired = isExpired(initialUser || "");
+
+  if (initialUser && !isMyTokenExpired) {
+    initialUser = decodeToken(initialUser || "");
+  } else {
+    initialUser = null;
+    localStorage.removeItem("token");
+  }
 
   const [user, setUser] = useState(initialUser);
 
@@ -21,11 +29,12 @@ function AuthProvider({ children }) {
   async function login(data) {
     const result = await loginUser(data);
     if (result.success) {
-      localStorage.setItem("user", JSON.stringify(result));
-      setUser(result.data);
+      localStorage.setItem("token", result.token);
+      const user = decodeToken(result.token);
+      setUser(user);
       navigate("/admin/todos");
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       toast(result.msg);
     }
   }
@@ -33,11 +42,12 @@ function AuthProvider({ children }) {
   async function register(data) {
     const result = await registerUser(data);
     if (result.success) {
-      localStorage.setItem("user", JSON.stringify(result));
-      setUser(result.data);
+      localStorage.setItem("token", result.token);
+      const user = decodeToken(result.token);
+      setUser(user);
       navigate("/admin/todos");
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       toast(result.msg);
     }
   }
@@ -45,7 +55,7 @@ function AuthProvider({ children }) {
   async function logout() {
     const result = await logoutUser();
     if (result.success) {
-      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       setUser(null);
       navigate("/");
     } else {

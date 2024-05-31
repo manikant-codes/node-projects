@@ -16,9 +16,10 @@ function Sidebar() {
   return (
     <div>
       <ul className="bg-slate-50 h-full flex flex-col gap-6 p-4 border-r-[2px]">
-        {links.map((value) => {
+        {links.map((value, index) => {
           return (
             <Link
+              key={index}
               to={value.link}
               className="flex gap-2 items-center cursor-pointer hover:underline"
             >

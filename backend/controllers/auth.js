@@ -22,7 +22,7 @@ const register = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: getUserObject(user),
+      // data: getUserObject(user),
       token,
     });
   } catch (error) {
@@ -58,7 +58,7 @@ const login = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: getUserObject(existingUser),
+      // data: getUserObject(existingUser),
       token,
     });
   } catch (error) {
