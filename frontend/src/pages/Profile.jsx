@@ -1,27 +1,38 @@
-import { Button, Label, TextInput } from "flowbite-react";
+import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../providers/AuthProvider";
 import { toast } from "react-toastify";
-import { updateUser } from "../services/apiServices";
+import { useAuth } from "../providers/AuthProvider";
+import { BASE_URL, updateUser } from "../services/apiServices";
+import { getBase64 } from "../helpers/imageHelper";
 
 function Profile() {
-  const { user } = useAuth();
+  const { user, removeUser } = useAuth();
 
   const [formState, setFormState] = useState({
     username: user.username,
     password: "",
     confirmPassword: "",
+    imageBase64: "",
+    imageFile: "",
   });
 
   function handleChange(e) {
+    // If it's image.
+    if (e.target.files && e.target.files[0]) {
+      getBase64(e.target.files[0], (base64) => {
+        setFormState({
+          ...formState,
+          imageBase64: base64,
+          imageFile: e.target.files[0],
+        });
+      });
+    }
+
     setFormState({
       ...formState,
       [e.target.name]: e.target.value,
     });
   }
-
-  console.log(formState);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -30,12 +41,28 @@ function Profile() {
       toast("Passwords don't match!");
       return;
     }
-    const result = await updateUser(user.userId, {
-      username: formState.username,
-      password: formState.password,
+
+    const formData = new FormData();
+
+    formData.append("image", formState.imageFile);
+    formData.append("username", formState.username);
+    formData.append("password", formState.password);
+
+    fetch(`${BASE_URL}/users/${user.userId}`, {
+      method: "PATCH",
+      body: formData,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-type": "multipart/form-data",
+      },
     });
 
-    console.log(result);
+    // const result = await updateUser(user.userId, {
+    //   username: formState.username,
+    //   password: formState.password,
+    // });
+
+    // removeUser();
   }
 
   return (
@@ -46,8 +73,20 @@ function Profile() {
         onSubmit={handleSubmit}
       >
         <div>
+          <img src={formState.image} alt="" className="h-[50px] w-[50px]" />
           <div className="mb-2 block">
-            <Label htmlFor="email" value="Your email" />
+            <Label htmlFor="file-upload" value="Upload file" />
+          </div>
+          <FileInput
+            name="image"
+            id="file-upload"
+            accept="image/*"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="username" value="Username" />
           </div>
           <TextInput
             id="username"

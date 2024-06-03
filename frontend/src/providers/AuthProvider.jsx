@@ -63,10 +63,16 @@ function AuthProvider({ children }) {
     }
   }
 
+  async function removeUser() {
+    setUser(null);
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   // const notify = () => toast("Wow so easy!");
 
   return (
-    <authContext.Provider value={{ user, login, register, logout }}>
+    <authContext.Provider value={{ user, login, register, logout, removeUser }}>
       {children}
       {/* <button onClick={notify}>Notify!</button> */}
       <ToastContainer />

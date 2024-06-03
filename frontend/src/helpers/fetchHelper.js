@@ -1,4 +1,4 @@
-export function fetchHelper(url, isProtected, method, body) {
+export async function fetchHelper(url, isProtected, method, body) {
   let options = {};
 
   const token = localStorage.getItem("token");
@@ -34,13 +34,12 @@ export function fetchHelper(url, isProtected, method, body) {
     options.headers = { authorization: "Bearer " + token };
   }
 
-  const promise = fetch(url, options)
-    .then((response) => {
-      return response.json();
-    })
-    .catch((error) => {
-      throw new Error(error.message);
-    });
+  const response = await fetch(url, options);
+  const data = await response.json();
 
-  return promise;
+  // if (data.success === false && data.msg === "Token expired!") {
+  //   localStorage.removeItem("token");
+  // }
+
+  return data;
 }

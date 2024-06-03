@@ -1,4 +1,8 @@
+const { getUserObject } = require("../helpers/authHelper");
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const { logout } = require("./auth");
+const Token = require("../models/Token");
 
 const getAllUsers = async (req, res) => {
   try {
@@ -21,37 +25,29 @@ const getSingleUser = async (req, res) => {
   }
 };
 
-// const addUser = async (req, res) => {
-//   try {
-//     let objUser = { ...req.body };
-
-//     const numberOfUsers = await User.countDocuments();
-
-//     if (numberOfUsers === 0) {
-//       objUser.role = "admin";
-//     }
-//     const user = await User.create(objUser);
-//     res.status(200).json({ success: true, data: user });
-//   } catch (error) {
-//     res.status(500).json({ success: false, msg: error.message });
-//   }
-// };
-
 const updateUser = async (req, res) => {
   try {
-    const existingUser = await User.findById(req.params.id);
-
-    if (!existingUser) {
-      return res
-        .status(404)
-        .json({ success: false, msg: "No such user found!" });
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    res.status(200).json({ success: true, data: updatedUser });
+    console.log(req.body);
+    // const existingUser = await User.findById(req.params.id);
+    // if (!existingUser) {
+    //   return res
+    //     .status(404)
+    //     .json({ success: false, msg: "No such user found!" });
+    // }
+    // const salt = bcrypt.genSaltSync(10);
+    // const hashedPassword = bcrypt.hashSync(req.body.password?.toString(), salt);
+    // const updatedUser = await User.findByIdAndUpdate(
+    //   req.params.id,
+    //   { ...req.body, password: hashedPassword },
+    //   {
+    //     new: true,
+    //   }
+    // );
+    // const token = req.headers.authorization.split(" ")[1];
+    // await Token.create({ token });
+    // res.status(200).json({ success: true, msg: "User updated successfully!" });
   } catch (error) {
+    console.log("Error: ", error);
     res.status(500).json({ success: false, msg: "Failed to update user!" });
   }
 };

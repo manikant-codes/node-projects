@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const tasksRouter = require("./routes/tasks");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
@@ -11,7 +12,8 @@ const connect = require("./db/connect");
 
 app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded());
+// app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
