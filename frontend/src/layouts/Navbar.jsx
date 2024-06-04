@@ -27,11 +27,20 @@ function Navbar() {
         )}
 
         {user && (
-          <li>
-            <Button onClick={logout} pill gradientDuoTone="purpleToBlue">
-              Logout
-            </Button>
-          </li>
+          <>
+            <li>
+              <Button onClick={logout} pill gradientDuoTone="purpleToBlue">
+                Logout
+              </Button>
+            </li>
+            <li>
+              <img
+                className="h-10 w-10 rounded-full border-2 border-teal-300"
+                src={user.image}
+                alt=""
+              />
+            </li>
+          </>
         )}
       </ul>
     </nav>

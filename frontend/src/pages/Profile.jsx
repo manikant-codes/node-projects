@@ -2,36 +2,33 @@ import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../providers/AuthProvider";
-import { BASE_URL, updateUser } from "../services/apiServices";
-import { getBase64 } from "../helpers/imageHelper";
+import { BASE_URL } from "../services/apiServices";
 
 function Profile() {
   const { user, removeUser } = useAuth();
+  console.log(user);
 
   const [formState, setFormState] = useState({
     username: user.username,
     password: "",
     confirmPassword: "",
-    imageBase64: "",
-    imageFile: "",
+    image: "",
   });
 
   function handleChange(e) {
-    // If it's image.
     if (e.target.files && e.target.files[0]) {
-      getBase64(e.target.files[0], (base64) => {
-        setFormState({
-          ...formState,
-          imageBase64: base64,
-          imageFile: e.target.files[0],
-        });
+      console.log(e.target.files[0]);
+      // If it's image.
+      setFormState({
+        ...formState,
+        image: e.target.files[0],
+      });
+    } else {
+      setFormState({
+        ...formState,
+        [e.target.name]: e.target.value,
       });
     }
-
-    setFormState({
-      ...formState,
-      [e.target.name]: e.target.value,
-    });
   }
 
   async function handleSubmit(e) {
@@ -44,7 +41,7 @@ function Profile() {
 
     const formData = new FormData();
 
-    formData.append("image", formState.imageFile);
+    formData.append("image", formState.image);
     formData.append("username", formState.username);
     formData.append("password", formState.password);
 
@@ -53,16 +50,11 @@ function Profile() {
       body: formData,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-type": "multipart/form-data",
+        // "Content-type": "multipart/form-data", // Do not write this. Let the browser decide it.
       },
     });
 
-    // const result = await updateUser(user.userId, {
-    //   username: formState.username,
-    //   password: formState.password,
-    // });
-
-    // removeUser();
+    removeUser();
   }
 
   return (
@@ -73,15 +65,15 @@ function Profile() {
         onSubmit={handleSubmit}
       >
         <div>
-          <img src={formState.image} alt="" className="h-[50px] w-[50px]" />
           <div className="mb-2 block">
             <Label htmlFor="file-upload" value="Upload file" />
           </div>
           <FileInput
-            name="image"
             id="file-upload"
+            name="image"
             accept="image/*"
             onChange={handleChange}
+            filename={formState.image.name}
           />
         </div>
         <div>
@@ -107,7 +99,6 @@ function Profile() {
             type="password"
             name="password"
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -118,7 +109,6 @@ function Profile() {
             id="confirmPassword"
             type="password"
             name="confirmPassword"
-            required
             onChange={handleChange}
           />
         </div>

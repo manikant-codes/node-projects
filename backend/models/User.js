@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
       enum: ["cyan", "magenta", "yellow"],
       default: "cyan",
     },
+    image: { type: String },
   },
   {
     timestamps: true,

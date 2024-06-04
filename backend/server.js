@@ -11,8 +11,8 @@ const dashboardRouter = require("./routes/dashboard");
 const connect = require("./db/connect");
 
 app.use(cors());
+app.use("/uploads", express.static("uploads"));
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 app.use("/auth", authRouter);
