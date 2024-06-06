@@ -11,7 +11,7 @@ import styles from "../../styles/todos/tasksList.module.css";
 import FlowModal from "../common/FlowModal";
 import PrioritySelect from "../common/PrioritySelect";
 import UpdateTaskForm from "./UpdateTaskForm";
-import { Button } from "flowbite-react";
+import { Button, Checkbox } from "flowbite-react";
 
 function TaskListItem({ task, tasks, setTasks }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,19 +40,20 @@ function TaskListItem({ task, tasks, setTasks }) {
   return (
     <>
       <li className={styles.taskListItem}>
-        <input
-          type="checkbox"
+        <Checkbox
           checked={task.isCompleted}
           onChange={handleCheckChange}
+          color="primary"
         />
         <p className={styles.task}>{task.task}</p>
         <p>{task.dueDate}</p>
         <PrioritySelect selected={task.priority} />
         <Button
-          gradientDuoTone="purpleToBlue"
+          // gradientDuoTone="purpleToBlue"
           onClick={handleEdit}
           pill
           size="sm"
+          color="primary"
         >
           <FontAwesomeIcon icon={faEdit} />
         </Button>

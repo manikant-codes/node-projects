@@ -29,7 +29,11 @@ function Navbar() {
         {user && (
           <>
             <li>
-              <Button onClick={logout} pill gradientDuoTone="purpleToBlue">
+              <Button
+                onClick={logout}
+                pill
+                // gradientDuoTone="purpleToBlue"
+              >
                 Logout
               </Button>
             </li>

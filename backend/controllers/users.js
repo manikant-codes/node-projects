@@ -37,27 +37,29 @@ const updateUser = async (req, res) => {
         .json({ success: false, msg: "No such user found!" });
     }
 
-    const newUserObj = {};
+    const temp = {};
 
     if (username) {
-      newUserObj.username = username;
+      temp.username = username;
     }
 
     if (req.files && req.files.image) {
-      if (req.files.image.size > 5000000) {
+      if (req.files.image.size > 1000000) {
         return res.status(400).json({
           success: false,
           msg: "Please upload a file smaller than or equal to 1mb!",
         });
       }
+
       const uploadPath = path.join(
         __dirname,
         "../uploads",
         req.files.image.name
       );
+
       await req.files.image.mv(uploadPath);
       const imageURL = `http://localhost:5000/uploads/${req.files.image.name}`;
-      newUserObj.image = imageURL;
+      temp.image = imageURL;
     }
 
     if (password) {
@@ -66,20 +68,22 @@ const updateUser = async (req, res) => {
         req.body.password?.toString(),
         salt
       );
-      newUserObj.password = hashedPassword;
+      temp.password = hashedPassword;
     }
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { ...newUserObj },
+      { ...temp },
       {
         new: true,
       }
     );
 
-    // Logout user.
-    const token = req.headers.authorization.split(" ")[1];
-    await Token.create({ token });
+    if (password) {
+      // Logout user.
+      const token = req.headers.authorization.split(" ")[1];
+      await Token.create({ token });
+    }
 
     res.status(200).json({ success: true, msg: "User updated successfully!" });
   } catch (error) {
