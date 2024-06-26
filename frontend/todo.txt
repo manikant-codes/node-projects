@@ -1,0 +1,24 @@
+login page - ok
+register page - ok
+cart (drawer) - ok
+wishlist (page) - ok
+// -----
+checkout
+order confirm
+integrate redux
+seperate home page
+details section in product details
+
+user account pages
+account 
+orders (list, details)
+address (page)
+
+
+admin
+reports
+product
+order
+reviews
+
+
