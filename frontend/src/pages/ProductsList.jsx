@@ -3,6 +3,7 @@ import CustomBredcrumb from "../components/common/CustomBredcrumb";
 import ProductsListCard from "../components/productsList/ProductsListCard";
 import Filters from "../components/productsList/filters/Filters";
 import { Select } from "flowbite-react";
+import { products } from "../data/productsList";
 
 function ProductsList() {
   return (
@@ -32,8 +33,8 @@ function ProductsList() {
             </div>
           </div>
           <div className="grid grid-cols-4 gap-4">
-            {[...Array(10)].map(() => {
-              return <ProductsListCard />;
+            {products.map((product) => {
+              return <ProductsListCard key={product.id} product={product} />;
             })}
           </div>
         </div>

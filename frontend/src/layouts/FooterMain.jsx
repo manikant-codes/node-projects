@@ -7,6 +7,7 @@ import {
   BsInstagram,
   BsTwitter,
 } from "react-icons/bs";
+import { COMPANY_NAME } from "../data/consts";
 
 function FooterMain() {
   return (
@@ -14,7 +15,7 @@ function FooterMain() {
       <div className="w-full">
         <div className="grid w-full grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4">
           <div>
-            <Footer.Title title="Company" />
+            <Footer.Title title={COMPANY_NAME} />
             <Footer.LinkGroup col>
               <Footer.Link href="#">About</Footer.Link>
               <Footer.Link href="#">Careers</Footer.Link>

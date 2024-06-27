@@ -11,37 +11,41 @@ import Orders from "./pages/user/Orders";
 import Address from "./pages/user/Address";
 import LayoutUser from "./layouts/user/LayoutUser";
 import UserAuthGuard from "./guards/UserAuthGuard";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LayoutMain />}>
-          <Route index element={<Home />} />
-          <Route path=":gender" element={<Home />} />
-          <Route path=":gender/:category" element={<ProductsList />} />
-          <Route
-            path=":gender/:category/:product"
-            element={<ProductDetails />}
-          />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route
-            path="user"
-            element={
-              <UserAuthGuard>
-                <LayoutUser />
-              </UserAuthGuard>
-            }
-          >
-            <Route path="profile" element={<Profile />} />
-            <Route path="orders" element={<Orders />} />
-            <Route path="address" element={<Address />} />
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LayoutMain />}>
+            <Route index element={<Home />} />
+            <Route path=":gender" element={<Home />} />
+            <Route path=":gender/:category" element={<ProductsList />} />
+            <Route
+              path=":gender/:category/:product"
+              element={<ProductDetails />}
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route
+              path="user"
+              element={
+                <UserAuthGuard>
+                  <LayoutUser />
+                </UserAuthGuard>
+              }
+            >
+              <Route path="profile" element={<Profile />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="address" element={<Address />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

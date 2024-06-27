@@ -53,3 +53,31 @@ export const trendingMenProducts = [
     ratings: 4.8,
   },
 ];
+
+export const categoriesMen = [
+  {
+    id: 1,
+    name: "T-Shirts",
+    img: "tshirts.jpg",
+  },
+  {
+    id: 2,
+    name: "Jeans",
+    img: "jeans.jpg",
+  },
+  {
+    id: 3,
+    name: "Jackets",
+    img: "jackets.jpg",
+  },
+  {
+    id: 4,
+    name: "Shoes",
+    img: "shoes.jpg",
+  },
+  {
+    id: 5,
+    name: "Hoodies",
+    img: "hoodies.jpg",
+  },
+];

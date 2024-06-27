@@ -1,6 +1,14 @@
-import { carouselKids } from "../data/kids";
-import { carouselMen, trendingMenProducts } from "../data/men";
-import { carouselWomen } from "../data/women";
+import {
+  carouselKids,
+  categoriesKids,
+  trendingKidsProducts,
+} from "../data/kids";
+import { carouselMen, categoriesMen, trendingMenProducts } from "../data/men";
+import {
+  carouselWomen,
+  categoriesWomen,
+  trendingWomenProducts,
+} from "../data/women";
 
 export function getCarouselImages(gender) {
   if (!gender || gender === "men") {
@@ -20,8 +28,20 @@ export function getTrendingProducts(gender) {
   }
 
   if (gender === "women") {
-    return carouselWomen;
+    return trendingWomenProducts;
   }
 
-  return carouselKids;
+  return trendingKidsProducts;
+}
+
+export function getCategories(gender) {
+  if (!gender || gender === "men") {
+    return categoriesMen;
+  }
+
+  if (gender === "women") {
+    return categoriesWomen;
+  }
+
+  return categoriesKids;
 }
