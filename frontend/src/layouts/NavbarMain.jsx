@@ -1,8 +1,10 @@
-import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
+import { Button, Dropdown, Navbar } from "flowbite-react";
 import React, { useState } from "react";
-import { HiHeart, HiShoppingCart } from "react-icons/hi";
+import { HiHeart, HiShoppingCart, HiUser } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import CartDrawer from "../components/cart/CartDrawer";
+import { COMPANY_NAME } from "../data/consts";
+import { dropdownLinks, dropdownUserInfo, navLinks } from "../data/layout";
 
 function NavbarMain() {
   const [isOpen, setIsOpen] = useState();
@@ -12,17 +14,24 @@ function NavbarMain() {
   }
 
   return (
-    <Navbar fluid>
-      <Navbar.Brand href="">
-        <img
-          src="/images/ecom-logo.png"
-          className="mr-3 h-6 sm:h-9"
-          alt="Flowbite React Logo"
-        />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          Ecom Express
-        </span>
-      </Navbar.Brand>
+    <Navbar fluid className="shadow-md">
+      <div className="flex items-center gap-8">
+        <Navbar.Brand className="flex items-center gap-2">
+          <HiShoppingCart className="text-2xl text-orange-500" />
+          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+            {COMPANY_NAME}
+          </span>
+        </Navbar.Brand>
+        <Navbar.Collapse>
+          {navLinks.map((link) => {
+            return (
+              <Link className="text-base" key={link.id} to={link.url}>
+                {link.name}
+              </Link>
+            );
+          })}
+        </Navbar.Collapse>
+      </div>
       <div className="flex md:order-2">
         <div className="flex items-center gap-4">
           <Link to="/login">Login/Register</Link>
@@ -36,41 +45,30 @@ function NavbarMain() {
             arrowIcon={false}
             inline
             label={
-              <Avatar
-                alt="User settings"
-                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                rounded
-              />
+              <div className="bg-slate-300 p-2 rounded-full">
+                <HiUser className="text-2xl" />
+              </div>
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm">Bonnie Green</span>
+              <span className="block text-sm">{dropdownUserInfo.name}</span>
               <span className="block truncate text-sm font-medium">
-                name@flowbite.com
+                {dropdownUserInfo.email}
               </span>
             </Dropdown.Header>
-            <Dropdown.Item>
-              <Link to="/user/profile">Profile</Link>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Link to="/user/orders">Orders</Link>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Link to="/user/address">Address</Link>
-            </Dropdown.Item>
+            {dropdownLinks.map((link) => {
+              return (
+                <Dropdown.Item key={link.id}>
+                  <Link to={link.url}>{link.name}</Link>
+                </Dropdown.Item>
+              );
+            })}
             <Dropdown.Divider />
             <Dropdown.Item>Sign out</Dropdown.Item>
           </Dropdown>
         </div>
         <Navbar.Toggle />
       </div>
-      <Navbar.Collapse>
-        <Link to="/" active>
-          Men
-        </Link>
-        <Link to="/women">Women</Link>
-        <Link to="/kids">Kids</Link>
-      </Navbar.Collapse>
       <CartDrawer isOpen={isOpen} handleToggle={handleToggle} />
     </Navbar>
   );

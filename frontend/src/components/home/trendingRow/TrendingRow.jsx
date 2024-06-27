@@ -13,15 +13,14 @@ const settings = {
   slidesToScroll: 1,
 };
 
-function TrendingRow() {
+function TrendingRow({ products }) {
   return (
     <div className="w-full p-8">
       <RowTitle title="Trending" />
       <Slider {...settings} className="">
-        <TrendingCard />
-        <TrendingCard />
-        <TrendingCard />
-        <TrendingCard />
+        {products.map((product) => {
+          return <TrendingCard key={product.id} product={product} />;
+        })}
       </Slider>
     </div>
   );
