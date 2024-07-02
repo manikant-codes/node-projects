@@ -36,4 +36,17 @@ const sendVerificationEmail = async (email, token) => {
   }
 };
 
-module.exports = { sendMail, sendVerificationEmail };
+const sendResetPasswordEmail = async (email, token) => {
+  try {
+    const html = `
+        <p>Click this link to reset your password: </p>
+        <a href=${origin}/reset-password?token=${token}&email=${email}>Reset Password</a>
+    `;
+
+    await sendMail({ to: email, subject: "Reset Password", html });
+  } catch (error) {
+    console.log("Failed to send reset password email. Error: ", error.message);
+  }
+};
+
+module.exports = { sendMail, sendVerificationEmail, sendResetPasswordEmail };
