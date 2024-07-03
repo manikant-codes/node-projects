@@ -127,8 +127,11 @@ const logout = async (req, res) => {
     });
 
     res.status(200).json({ success: true, msg: "Logged out successfully." });
-  } catch (error) {}
+  } catch (error) {
+    sendErrorResponse(res, error.message);
+  }
 };
+
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -149,18 +152,51 @@ const forgotPassword = async (req, res) => {
     //   email: user.email,
     //   token: passwordToken,
     // });
+
     const tenMinutes = 1000 * 60 * 10;
     const resetPasswordTokenExpiry = new Date(Date.now() + tenMinutes);
 
     existingUser.resetPasswordToken = passwordToken;
-    existingUser.resetPasswordTokenExpiry = passwordTokenExpirationDate;
+    existingUser.resetPasswordTokenExpiry = resetPasswordTokenExpiry;
 
     await existingUser.save();
-  } catch (error) {}
-  res.send("forgotPassword");
+
+    res.status(200).json({ success: true, msg: "Reset password mail sent." });
+  } catch (error) {
+    sendErrorResponse(res, error.message);
+  }
 };
+
 const resetPassword = async (req, res) => {
-  res.send("resetPassword");
+  try {
+    const { email, token, password } = req.body;
+
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return sendErrorResponse(res, "No such email exists.", 404);
+    }
+
+    if (existingUser.resetPasswordTokenExpiry > new Date()) {
+      return sendErrorResponse(
+        res,
+        "The reset link is expired, please generate a new one.",
+        400
+      );
+    }
+
+    if (existingUser.resetPasswordToken !== token) {
+      return sendErrorResponse(res, "Invalid token.", 400);
+    }
+
+    existingUser.password = password;
+    existingUser.resetPasswordToken = "";
+    existingUser.resetPasswordTokenExpiry = null;
+
+    await existingUser.save();
+  } catch (error) {
+    sendErrorResponse(res, error.message);
+  }
 };
 
 module.exports = {
