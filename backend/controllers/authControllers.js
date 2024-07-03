@@ -1,16 +1,10 @@
 const User = require("../models/User");
-
 const {
   sendVerificationEmail,
   sendResetPasswordEmail,
 } = require("../utils/emailUtils");
 const { sendErrorResponse } = require("../utils/serverUtils");
-const {
-  getCryptoToken,
-  getJWT,
-  getTokenUser,
-  verifyJWT,
-} = require("../utils/tokenUtils");
+const { getCryptoToken, getJWT, getTokenUser } = require("../utils/tokenUtils");
 
 const register = async (req, res) => {
   try {
@@ -122,14 +116,6 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const { accessToken } = req.cookies;
-
-    if (!accessToken) {
-      return sendErrorResponse(res, "Token not provided.", 401);
-    }
-
-    const tokenUser = verifyJWT(accessToken);
-
     res.cookie("accessToken", "", {
       httpOnly: true,
       secure: false,
@@ -184,6 +170,39 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
+    const { email, token, password } = req.body;
+
+    if (!email || !token || !password) {
+      return sendErrorResponse(res, "All fields are required.", 400);
+    }
+
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return sendErrorResponse(res, "No such user exists.", 404);
+    }
+
+    if (new Date() > existingUser.resetPasswordTokenExpiry) {
+      return sendErrorResponse(
+        res,
+        "Reset password token expired. Please generate a new one.",
+        400
+      );
+    }
+
+    if (existingUser.resetPasswordToken !== token) {
+      return sendErrorResponse(res, "Invalid token.", 400);
+    }
+
+    existingUser.password = password;
+    existingUser.resetPasswordToken = "";
+    existingUser.resetPasswordTokenExpiry = null;
+
+    await existingUser.save();
+
+    res
+      .status(200)
+      .json({ success: true, msg: "Password reset successfully." });
   } catch (error) {
     sendErrorResponse(res, error.message);
   }

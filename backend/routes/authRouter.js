@@ -7,12 +7,13 @@ const {
   forgotPassword,
   resetPassword,
 } = require("../controllers/authControllers");
+const authMiddleware = require("../middlewares/authMiddleware");
 const authRouter = express.Router();
 
 authRouter.post("/register", register);
 authRouter.post("/verify-email", verifyEmail);
 authRouter.post("/login", login);
-authRouter.delete("/logout", logout);
+authRouter.get("/logout", authMiddleware, logout);
 authRouter.post("/forgot-password", forgotPassword);
 authRouter.post("/reset-password", resetPassword);
 

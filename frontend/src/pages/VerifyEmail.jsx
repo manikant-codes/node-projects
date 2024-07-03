@@ -1,19 +1,42 @@
 import { Button } from "flowbite-react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { verifyEmail } from "../services/apiServices";
 
 function VerifyEmail() {
   const navigate = useNavigate();
+  const params = useSearchParams();
+
+  const [verified, setVerified] = useState(false);
+
+  useEffect(() => {
+    const data = {
+      verificationToken: params[0].get("token"),
+      email: params[0].get("email"),
+    };
+
+    async function verify() {
+      const response = await verifyEmail(data);
+      setVerified(response.success);
+    }
+
+    verify();
+  }, []);
 
   function goToHome() {
     navigate("/");
   }
 
   return (
-    <div>
-      <div>
-        <h1>Verifying Email</h1>
-        <Button onClick={goToHome}>Go to Home</Button>
+    <div className="p-8">
+      <div className="flex flex-col gap-4">
+        <h2 className="text-2xl">
+          {verified ? "Verified" : "Verifying Email..."}
+        </h2>
+
+        <Button className="w-fit" onClick={goToHome} disabled={!verified}>
+          Go to Home
+        </Button>
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import UserAuthGuard from "./guards/UserAuthGuard";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import VerifyEmail from "./pages/VerifyEmail";
+import ResetPassword from "./pages/user/ResetPassword";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="verify-email" element={<VerifyEmail />} />
+            <Route path="reset-password" element={<ResetPassword />} />
             <Route
               path="user"
               element={
