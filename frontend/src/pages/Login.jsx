@@ -49,6 +49,8 @@ function Login() {
         <div className="text-center">
           <p>or</p>
           <Link to="/register">Register</Link>
+          <br />
+          <Link to="/forgot-password">Forgot password?</Link>
         </div>
       </Card>
     </div>

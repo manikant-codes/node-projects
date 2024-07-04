@@ -17,7 +17,7 @@ function logout() {
 }
 
 function forgotPassword(data) {
-  return fetchHelper(`${baseURL}/auth/reset-password`, "POST", data);
+  return fetchHelper(`${baseURL}/auth/forgot-password`, "POST", data);
 }
 
 function resetPassword(data) {

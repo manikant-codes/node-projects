@@ -60,8 +60,8 @@ const verifyEmail = async (req, res) => {
       return sendErrorResponse(res, "Email is already verified..", 400);
     }
 
-    existingUser.verificationToken = "";
     existingUser.isVerified = true;
+    existingUser.verificationToken = "";
     existingUser.verifiedAt = new Date();
 
     await existingUser.save();
@@ -98,7 +98,10 @@ const login = async (req, res) => {
 
     const tokenUser = getTokenUser(existingUser);
 
-    const accessToken = getJWT(tokenUser);
+    const accessToken = getJWT({
+      userId: tokenUser.userId,
+      role: tokenUser.role,
+    });
 
     const oneDay = 1000 * 60 * 60 * 24;
 
@@ -108,7 +111,11 @@ const login = async (req, res) => {
       expires: new Date(Date.now() + oneDay),
     });
 
-    res.status(200).json({ success: true, msg: "Logged in successfully." });
+    res.status(200).json({
+      success: true,
+      data: tokenUser,
+      msg: "Logged in successfully.",
+    });
   } catch (error) {
     sendErrorResponse(res, error.message);
   }
@@ -143,7 +150,7 @@ const forgotPassword = async (req, res) => {
     if (!existingUser) {
       return sendErrorResponse(
         res,
-        "Reset password mail sent successfully..",
+        "Reset password mail sent successfully...",
         200
       );
     }
@@ -182,16 +189,16 @@ const resetPassword = async (req, res) => {
       return sendErrorResponse(res, "No such user exists.", 404);
     }
 
+    if (existingUser.resetPasswordToken !== token) {
+      return sendErrorResponse(res, "Invalid token.", 400);
+    }
+
     if (new Date() > existingUser.resetPasswordTokenExpiry) {
       return sendErrorResponse(
         res,
         "Reset password token expired. Please generate a new one.",
         400
       );
-    }
-
-    if (existingUser.resetPasswordToken !== token) {
-      return sendErrorResponse(res, "Invalid token.", 400);
     }
 
     existingUser.password = password;

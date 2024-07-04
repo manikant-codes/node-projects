@@ -18,9 +18,9 @@ const images = [
 function ProductImages() {
   return (
     <div className="grid grid-cols-2 gap-2">
-      {images.map((image) => {
+      {images.map((image, index) => {
         return (
-          <div className="h-[300px] overflow-hidden border">
+          <div key={index} className="h-[300px] overflow-hidden border">
             <img
               src={image.src}
               alt=""

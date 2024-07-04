@@ -43,8 +43,14 @@ function Filters() {
       />
       <CheckboxFilters
         title="Color"
-        categories={clothesColors.map((color) => {
-          return <ColorLable color={color.color} colorName={color.colorName} />;
+        categories={clothesColors.map((color, index) => {
+          return (
+            <ColorLable
+              key={index}
+              color={color.color}
+              colorName={color.colorName}
+            />
+          );
         })}
       />
     </div>

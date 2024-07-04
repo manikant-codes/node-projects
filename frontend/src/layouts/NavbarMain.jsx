@@ -23,7 +23,7 @@ function NavbarMain() {
           </span>
         </Navbar.Brand>
         <Navbar.Collapse>
-          {navLinks.map((link) => {
+          {navLinks.map((link, index) => {
             return (
               <Link className="text-base" key={link.id} to={link.url}>
                 {link.name}

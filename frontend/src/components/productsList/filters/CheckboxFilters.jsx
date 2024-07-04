@@ -8,7 +8,7 @@ function CheckboxFilters({ title, categories }) {
       <ul className="flex flex-col gap-2">
         {categories.map((value, index) => {
           return (
-            <li className="flex items-center gap-2">
+            <li key={index} className="flex items-center gap-2">
               <Checkbox />
               <p>{value}</p>
             </li>

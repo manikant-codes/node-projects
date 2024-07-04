@@ -15,8 +15,11 @@ async function fetchHelper(url, method = "GET", body) {
 
   const response = await fetch(url, {
     method,
+    credentials: "include",
     ...options,
   });
+
+  // console.log("response.headers", response.headers.getSetCookie());
 
   const data = await response.json();
 
