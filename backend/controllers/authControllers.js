@@ -5,6 +5,7 @@ const {
 } = require("../utils/emailUtils");
 const { sendErrorResponse } = require("../utils/serverUtils");
 const { getCryptoToken, getJWT, getTokenUser } = require("../utils/tokenUtils");
+const bcrypt = require("bcrypt");
 
 const register = async (req, res) => {
   try {
@@ -92,7 +93,12 @@ const login = async (req, res) => {
       return sendErrorResponse(res, "Account not verified.", 401);
     }
 
-    if (existingUser.password !== password) {
+    const isPasswordSame = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+
+    if (!isPasswordSame) {
       return sendErrorResponse(res, "Invalid password.", 401);
     }
 

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const { emailRegex } = require("../utils/regexUtils");
 
 const userSchema = new mongoose.Schema(
@@ -49,6 +50,17 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.pre("save", async function (next) {
+  const user = this;
+  if (!user.isModified("password")) {
+    return next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(user.password, salt);
+  user.password = hashedPassword;
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 
