@@ -32,4 +32,6 @@ export const { addToCart, removeFromCart, increaseQty, decreaseQty } =
 
 const cartSliceReducer = cartSlice.reducer;
 
+console.log("addToCart", addToCart("hello"));
+
 export default cartSliceReducer;

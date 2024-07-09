@@ -33,4 +33,6 @@ const userSlice = createSlice({
 
 const userSliceReducer = userSlice.reducer;
 
+console.log("getUser", getUser.pending());
+
 export default userSliceReducer;

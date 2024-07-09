@@ -2,6 +2,7 @@ import React from "react";
 import NavbarMain from "./NavbarMain";
 import FooterMain from "./FooterMain";
 import { Outlet, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 function LayoutMain() {
   const { pathname } = useLocation();
@@ -10,6 +11,11 @@ function LayoutMain() {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>My Title</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+      </Helmet>
       <NavbarMain />
       <Outlet />
       {!isLoginRegister && <FooterMain />}
