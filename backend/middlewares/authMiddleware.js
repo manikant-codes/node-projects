@@ -18,4 +18,15 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+const isAdminMiddleware = async (req, res, next) => {
+  try {
+    if (req.user.role !== "admin") {
+      return sendErrorResponse(res, "Forbidden.", 403);
+    }
+    next();
+  } catch (error) {
+    sendErrorResponse(res, "Something went wrong.", 500);
+  }
+};
+
+module.exports = { authMiddleware, isAdminMiddleware };

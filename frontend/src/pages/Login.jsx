@@ -1,20 +1,25 @@
 import { Button, Card, Label, TextInput } from "flowbite-react";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../redux/slices/userSlice";
+import { loginUser } from "../redux/slices/userSlice";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector((store) => {
-    return store.user;
+    return store.user.user;
   });
 
-  console.log("user", user);
+  useEffect(() => {
+    if (user) {
+      navigate("/user/profile");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   async function handleSubmit(e) {
     try {
@@ -26,7 +31,7 @@ function Login() {
       };
 
       // const response = await login(data);
-      dispatch(getUser(data));
+      dispatch(loginUser(data));
     } catch (error) {
       console.log("Error: ", error);
     }
