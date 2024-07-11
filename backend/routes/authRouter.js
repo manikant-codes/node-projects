@@ -7,7 +7,7 @@ const {
   forgotPassword,
   resetPassword,
 } = require("../controllers/authControllers");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 const authRouter = express.Router();
 
 authRouter.post("/register", register);

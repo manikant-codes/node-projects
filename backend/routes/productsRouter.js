@@ -4,6 +4,7 @@ const {
   authMiddleware,
   isAdminMiddleware,
 } = require("../middlewares/authMiddleware");
+
 const {
   getAllProducts,
   getSingleProduct,
