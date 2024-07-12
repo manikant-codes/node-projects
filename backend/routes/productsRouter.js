@@ -16,7 +16,7 @@ const {
 productsRouter.get("/", getAllProducts);
 productsRouter.get("/:id", getSingleProduct);
 productsRouter.post("/", authMiddleware, isAdminMiddleware, addProduct);
-productsRouter.patch("/:id", authMiddleware, isAdminMiddleware, updateProduct);
+productsRouter.patch("/:id", updateProduct);
 productsRouter.delete("/:id", authMiddleware, isAdminMiddleware, deleteProduct);
 
 module.exports = productsRouter;
