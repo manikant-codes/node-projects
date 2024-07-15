@@ -1,7 +1,7 @@
 import { Button, Dropdown, Navbar } from "flowbite-react";
 import React, { useState } from "react";
 import { HiHeart, HiShoppingCart, HiUser } from "react-icons/hi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CartDrawer from "../components/cart/CartDrawer";
 import { COMPANY_NAME } from "../data/consts";
@@ -9,11 +9,14 @@ import { dropdownLinks, dropdownUserInfo, navLinks } from "../data/layout";
 import { logoutUser } from "../redux/slices/userSlice";
 
 function NavbarMain() {
-  const [isOpen, setIsOpen] = useState();
+  const [isCartOpen, setCartIsOpen] = useState();
   const dispatch = useDispatch();
+  const user = useSelector((store) => {
+    return store.user.user;
+  });
 
-  function handleToggle() {
-    setIsOpen(!isOpen);
+  function handleCartToggle() {
+    setCartIsOpen(!isCartOpen);
   }
 
   async function handleLogout() {
@@ -41,42 +44,49 @@ function NavbarMain() {
       </div>
       <div className="flex md:order-2">
         <div className="flex items-center gap-4">
-          <Link to="/login">Login/Register</Link>
+          {!user && <Link to="/login">Login/Register</Link>}
           <Link to="/wishlist">
             <HiHeart className="w-5 h-5 text-red-500" />
           </Link>
-          <Button pill onClick={handleToggle}>
+          <Button pill onClick={handleCartToggle}>
             <HiShoppingCart className="w-5 h-5 mr-2" /> Cart
           </Button>
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <div className="bg-slate-300 p-2 rounded-full">
-                <HiUser className="text-2xl" />
-              </div>
-            }
-          >
-            <Dropdown.Header>
-              <span className="block text-sm">{dropdownUserInfo.name}</span>
-              <span className="block truncate text-sm font-medium">
-                {dropdownUserInfo.email}
-              </span>
-            </Dropdown.Header>
-            {dropdownLinks.map((link) => {
-              return (
-                <Dropdown.Item key={link.id}>
-                  <Link to={link.url}>{link.name}</Link>
+          {user && (
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={
+                <div className="bg-slate-300 p-2 rounded-full">
+                  <HiUser className="text-2xl" />
+                </div>
+              }
+            >
+              <Dropdown.Header>
+                <span className="block text-sm">{user.name}</span>
+                <span className="block truncate text-sm font-medium">
+                  {user.email}
+                </span>
+              </Dropdown.Header>
+              {dropdownLinks.map((link) => {
+                return (
+                  <Dropdown.Item key={link.id}>
+                    <Link to={link.url}>{link.name}</Link>
+                  </Dropdown.Item>
+                );
+              })}
+              {user.role === "admin" && (
+                <Dropdown.Item key="admin-dashboard">
+                  <Link to="/admin/dashboard">Admin Dashboard</Link>
                 </Dropdown.Item>
-              );
-            })}
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
-          </Dropdown>
+              )}
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
+            </Dropdown>
+          )}
         </div>
         <Navbar.Toggle />
       </div>
-      <CartDrawer isOpen={isOpen} handleToggle={handleToggle} />
+      <CartDrawer isOpen={isCartOpen} handleToggle={handleCartToggle} />
     </Navbar>
   );
 }

@@ -8,9 +8,8 @@ import { products } from "../data/productsList";
 function ProductsList() {
   return (
     <div>
-      <div className="p-8 flex flex-col gap-4">
+      <div className="px-8 pt-8 flex flex-col gap-4">
         <CustomBredcrumb />
-        <p>Kids Wear Online Store - 43851 items</p>
       </div>
       <div className="grid grid-cols-[226px_1fr] p-8 gap-4">
         <div className="">

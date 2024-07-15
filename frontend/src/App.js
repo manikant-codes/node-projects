@@ -1,21 +1,27 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LayoutMain from "./layouts/LayoutMain";
-import Home from "./pages/Home";
-import ProductsList from "./pages/ProductsList";
-import ProductDetails from "./pages/ProductDetails";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Wishlist from "./pages/Wishlist";
-import Profile from "./pages/user/Profile";
-import Orders from "./pages/user/Orders";
-import Address from "./pages/user/Address";
-import LayoutUser from "./layouts/user/LayoutUser";
-import UserAuthGuard from "./guards/UserAuthGuard";
 import { Provider } from "react-redux";
-import store from "./redux/store";
-import VerifyEmail from "./pages/VerifyEmail";
-import ResetPassword from "./pages/ResetPassword";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AccountAdmin from "./components/admin/accountAdmin/AccountAdmin";
+import DashboardAdmin from "./components/admin/dashboardAdmin/DashboardAdmin";
+import OrdersListAdmin from "./components/admin/ordersListAdmin/OrdersListAdmin";
+import ProductsListAdmin from "./components/admin/productsListAdmin/ProductsListAdmin";
+import UsersListAdmin from "./components/admin/usersListAdmin/UsersListAdmin";
+import UserAuthGuard from "./guards/UserAuthGuard";
+import LayoutMain from "./layouts/LayoutMain";
+import LayoutAdmin from "./layouts/admin/LayoutAdmin";
+import LayoutUser from "./layouts/user/LayoutUser";
 import ForgotPassword from "./pages/ForgotPassword";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import ProductDetails from "./pages/ProductDetails";
+import ProductsList from "./pages/ProductsList";
+import Register from "./pages/Register";
+import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
+import Wishlist from "./pages/Wishlist";
+import Address from "./pages/user/Address";
+import Orders from "./pages/user/Orders";
+import Profile from "./pages/user/Profile";
+import store from "./redux/store";
 
 function App() {
   return (
@@ -48,6 +54,13 @@ function App() {
               <Route path="orders" element={<Orders />} />
               <Route path="address" element={<Address />} />
             </Route>
+          </Route>
+          <Route path="/admin" element={<LayoutAdmin />}>
+            <Route path="dashboard" element={<DashboardAdmin />} />
+            <Route path="products" element={<ProductsListAdmin />} />
+            <Route path="orders" element={<OrdersListAdmin />} />
+            <Route path="users" element={<UsersListAdmin />} />
+            <Route path="account" element={<AccountAdmin />} />
           </Route>
         </Routes>
       </BrowserRouter>
