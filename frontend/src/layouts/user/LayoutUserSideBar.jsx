@@ -14,7 +14,7 @@ function LayoutUserSideBar() {
       <ul className="flex flex-col gap-4">
         {links.map((value, index) => {
           return (
-            <li className="flex items-center gap-2">
+            <li key={index} className="flex items-center gap-2">
               <div className="[&>svg]:text-xl [&>svg]:text-gray-500">
                 {value.icon}
               </div>

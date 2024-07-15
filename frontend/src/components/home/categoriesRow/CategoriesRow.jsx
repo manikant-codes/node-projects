@@ -7,8 +7,8 @@ function CategoriesRow({ categories }) {
     <div className="p-8">
       <RowTitle title="Shop by Category" />
       <div className="grid grid-cols-4 gap-4">
-        {categories.map((category) => {
-          return <CategoryCard category={category} />;
+        {categories.map((category, index) => {
+          return <CategoryCard key={index} category={category} />;
         })}
       </div>
     </div>

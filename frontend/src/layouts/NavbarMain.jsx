@@ -1,16 +1,23 @@
 import { Button, Dropdown, Navbar } from "flowbite-react";
 import React, { useState } from "react";
 import { HiHeart, HiShoppingCart, HiUser } from "react-icons/hi";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import CartDrawer from "../components/cart/CartDrawer";
 import { COMPANY_NAME } from "../data/consts";
 import { dropdownLinks, dropdownUserInfo, navLinks } from "../data/layout";
+import { logoutUser } from "../redux/slices/userSlice";
 
 function NavbarMain() {
   const [isOpen, setIsOpen] = useState();
+  const dispatch = useDispatch();
 
   function handleToggle() {
     setIsOpen(!isOpen);
+  }
+
+  async function handleLogout() {
+    dispatch(logoutUser());
   }
 
   return (
@@ -23,7 +30,7 @@ function NavbarMain() {
           </span>
         </Navbar.Brand>
         <Navbar.Collapse>
-          {navLinks.map((link) => {
+          {navLinks.map((link, index) => {
             return (
               <Link className="text-base" key={link.id} to={link.url}>
                 {link.name}
@@ -64,7 +71,7 @@ function NavbarMain() {
               );
             })}
             <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
           </Dropdown>
         </div>
         <Navbar.Toggle />

@@ -4,13 +4,20 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { start } = require("./utils/serverUtils");
 const authRouter = require("./routes/authRouter");
+const usersRouter = require("./routes/usersRouter");
+const productsRouter = require("./routes/productsRouter");
+const fileupload = require("express-fileupload");
 
 const app = express();
 
-app.use(cors());
-app.use(cookieParser("secret"));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cookieParser());
 app.use(express.json());
+app.use(fileupload());
+app.use("/uploads", express.static("uploads"));
 
 app.use("/auth", authRouter);
+app.use("/users", usersRouter);
+app.use("/products", productsRouter);
 
 start(app);
