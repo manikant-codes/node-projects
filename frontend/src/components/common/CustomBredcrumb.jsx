@@ -2,17 +2,16 @@ import { Breadcrumb } from "flowbite-react";
 import React from "react";
 import { HiHome } from "react-icons/hi";
 
-function CustomBredcrumb() {
+function CustomBredcrumb({ items }) {
   return (
-    <div>
-      <Breadcrumb aria-label="Default breadcrumb example">
-        <Breadcrumb.Item href="#" icon={HiHome}>
-          Home
-        </Breadcrumb.Item>
-        <Breadcrumb.Item href="#">Projects</Breadcrumb.Item>
-        <Breadcrumb.Item>Flowbite React</Breadcrumb.Item>
-      </Breadcrumb>
-    </div>
+    <Breadcrumb aria-label="products list breadcrumb" className="mb-8">
+      <Breadcrumb.Item href="#" icon={HiHome}>
+        Home
+      </Breadcrumb.Item>
+      {items?.map((item) => {
+        return <Breadcrumb.Item href="#">{item.text}</Breadcrumb.Item>;
+      })}
+    </Breadcrumb>
   );
 }
 

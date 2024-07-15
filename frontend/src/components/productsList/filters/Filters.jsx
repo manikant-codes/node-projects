@@ -6,10 +6,12 @@ import { clothesColors } from "../../../data/productsList";
 
 function Filters() {
   return (
-    <div>
+    <div className="border-r pr-4">
       <div className="flex items-center justify-between py-4">
         <h2>Filters</h2>
-        <Button>Clear All</Button>
+        <Button pill size="sm">
+          Clear All
+        </Button>
       </div>
       <CheckboxFilters
         title="Categories"

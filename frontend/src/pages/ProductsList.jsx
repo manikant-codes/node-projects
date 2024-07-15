@@ -1,17 +1,14 @@
+import { Select } from "flowbite-react";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import CustomBredcrumb from "../components/common/CustomBredcrumb";
 import ProductsListCard from "../components/productsList/ProductsListCard";
 import Filters from "../components/productsList/filters/Filters";
-import { Select } from "flowbite-react";
-import { products } from "../data/productsList";
 import { getAllProducts } from "../services/apiServices";
-import { useParams } from "react-router-dom";
 
 function ProductsList() {
   const [products, setProducts] = useState(null);
   const { gender, category } = useParams();
-
-  console.log(gender, category);
 
   useEffect(() => {
     getAllProducts({ gender, category }).then((data) => {
@@ -22,15 +19,17 @@ function ProductsList() {
   if (!products) return null;
 
   return (
-    <div>
-      <div className="p-8 flex flex-col gap-4">
-        <CustomBredcrumb />
-        <p>Kids Wear Online Store - 43851 items</p>
+    <div className="p-8">
+      <div>
+        <CustomBredcrumb
+          items={[
+            { text: gender, link: "" },
+            { text: category, link: "" },
+          ]}
+        />
       </div>
-      <div className="grid grid-cols-[226px_1fr] p-8 gap-4">
-        <div className="">
-          <Filters />
-        </div>
+      <div className="grid grid-cols-[226px_1fr] gap-4">
+        <Filters />
         <div>
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
