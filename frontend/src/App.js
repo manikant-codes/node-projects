@@ -22,6 +22,7 @@ import Address from "./pages/user/Address";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
 import store from "./redux/store";
+import AddUpdateProducts from "./components/admin/productsListAdmin/AddUpdateProducts";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
           <Route path="/admin" element={<LayoutAdmin />}>
             <Route path="dashboard" element={<DashboardAdmin />} />
             <Route path="products" element={<ProductsListAdmin />} />
+            <Route path="products/:id" element={<AddUpdateProducts />} />
             <Route path="orders" element={<OrdersListAdmin />} />
             <Route path="users" element={<UsersListAdmin />} />
             <Route path="account" element={<AccountAdmin />} />
