@@ -1,16 +1,21 @@
 import { Button, Dropdown, Navbar } from "flowbite-react";
 import React, { useState } from "react";
 import { HiHeart, HiShoppingCart, HiUser } from "react-icons/hi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CartDrawer from "../components/cart/CartDrawer";
 import { COMPANY_NAME } from "../data/consts";
-import { dropdownLinks, dropdownUserInfo, navLinks } from "../data/layout";
+import { dropdownLinks, navLinks } from "../data/layout";
 import { logoutUser } from "../redux/slices/userSlice";
 
 function NavbarMain() {
   const [isOpen, setIsOpen] = useState();
+  const user = useSelector((store) => {
+    return store.user;
+  });
   const dispatch = useDispatch();
+
+  const isLoggedIn = user?.user;
 
   function handleToggle() {
     setIsOpen(!isOpen);
@@ -41,38 +46,40 @@ function NavbarMain() {
       </div>
       <div className="flex md:order-2">
         <div className="flex items-center gap-4">
-          <Link to="/login">Login/Register</Link>
+          {!isLoggedIn && <Link to="/login">Login/Register</Link>}
           <Link to="/wishlist">
             <HiHeart className="w-5 h-5 text-red-500" />
           </Link>
           <Button pill onClick={handleToggle}>
             <HiShoppingCart className="w-5 h-5 mr-2" /> Cart
           </Button>
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <div className="bg-slate-300 p-2 rounded-full">
-                <HiUser className="text-2xl" />
-              </div>
-            }
-          >
-            <Dropdown.Header>
-              <span className="block text-sm">{dropdownUserInfo.name}</span>
-              <span className="block truncate text-sm font-medium">
-                {dropdownUserInfo.email}
-              </span>
-            </Dropdown.Header>
-            {dropdownLinks.map((link) => {
-              return (
-                <Dropdown.Item key={link.id}>
-                  <Link to={link.url}>{link.name}</Link>
-                </Dropdown.Item>
-              );
-            })}
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
-          </Dropdown>
+          {isLoggedIn && (
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={
+                <div className="bg-slate-300 p-2 rounded-full">
+                  <HiUser className="text-2xl" />
+                </div>
+              }
+            >
+              <Dropdown.Header>
+                <span className="block text-sm">{user?.user?.name}</span>
+                <span className="block truncate text-sm font-medium">
+                  {user?.user?.email}
+                </span>
+              </Dropdown.Header>
+              {dropdownLinks.map((link) => {
+                return (
+                  <Dropdown.Item key={link.id}>
+                    <Link to={link.url}>{link.name}</Link>
+                  </Dropdown.Item>
+                );
+              })}
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
+            </Dropdown>
+          )}
         </div>
         <Navbar.Toggle />
       </div>

@@ -8,7 +8,6 @@ import {
   getCategories,
   getTrendingProducts,
 } from "../helpers/homeHelper";
-import { Helmet } from "react-helmet";
 
 function Home() {
   const params = useParams();

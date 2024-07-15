@@ -2,11 +2,19 @@ const Product = require("../models/Product");
 const { sendErrorResponse } = require("../utils/serverUtils");
 const path = require("path");
 const fs = require("fs/promises");
+const { convertFieldToArray } = require("../utils/productsUtils");
 
 const getAllProducts = async (req, res) => {
   try {
-    // Filters
-    const products = await Product.find({});
+    const query = req.query;
+    const filters = {};
+    if (query.gender) {
+      filters.gender = query.gender;
+    }
+    if (query.category) {
+      filters.category = query.category;
+    }
+    const products = await Product.find({ ...filters });
     res.status(200).send({ success: true, data: products });
   } catch (error) {
     sendErrorResponse(res, error.message);
@@ -16,7 +24,6 @@ const getAllProducts = async (req, res) => {
 const getSingleProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const product = await Product.findById(id);
 
     if (!product) {
@@ -48,7 +55,10 @@ const addProduct = async (req, res) => {
       images.push("http://localhost:5000/uploads/" + fileName);
     }
 
-    const product = await Product.create({ ...body, images });
+    const product = await Product.create({
+      ...body,
+      images,
+    });
 
     res.status(200).json({ success: true, data: product });
   } catch (error) {
@@ -62,19 +72,17 @@ const updateProduct = async (req, res) => {
     const body = req.body;
     const files = req.files?.images;
 
+    req.body.images = convertFieldToArray(req.body.images);
+    req.body.sizes = convertFieldToArray(req.body.sizes);
+    req.body.colors = convertFieldToArray(req.body.colors);
+
     const product = await Product.findById(id);
 
     if (!product) {
       return sendErrorResponse(res, "No such product found.", 404);
     }
 
-    // Check if images have changed.
-    // Check for deleted images and delete them.
-    if (!body.images || !body.images.length) {
-      body.images = product.images || [];
-    }
-
-    if (body.images.length) {
+    if (product.images.length) {
       for (const img of product.images) {
         if (!body.images.includes(img)) {
           const deletePath = path.join(

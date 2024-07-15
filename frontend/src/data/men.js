@@ -57,7 +57,7 @@ export const trendingMenProducts = [
 export const categoriesMen = [
   {
     id: 1,
-    name: "T-Shirts",
+    name: "T-Shirt",
     img: "tshirts.jpg",
   },
   {
