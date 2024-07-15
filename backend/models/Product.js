@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
   price: { type: Number, min: 0, required: true },
   taxRate: { type: Number, min: 0, required: true },
   deliveryCharges: { type: Number, min: 0, required: true },
+  stock: { type: Number, requried: true },
   rating: { type: Number, min: 0, max: 5, default: 0 },
   images: {
     type: [String],
@@ -22,11 +23,10 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["t-shirt", "shirt", "jeans", "jackets", "shoes", "hoodies"],
+    enum: ["t-shirts", "shirts", "jeans", "jackets", "shoes", "hoodies"],
     required: true,
   },
   gender: { type: String, enum: ["men", "women", "kids"], required: true },
-  stock: { type: Number, requried: true },
   sizes: {
     type: [String],
     // validate: {
