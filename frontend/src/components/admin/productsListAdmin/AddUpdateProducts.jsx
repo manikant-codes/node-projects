@@ -1,19 +1,22 @@
 import { Button, Checkbox, Label, Select, Textarea } from "flowbite-react";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import AdminPageTitle from "../../common/AdminPageTitle";
 import MyInput from "../../common/form/MyInput";
 import MyTextarea from "../../common/form/MyTextarea";
 import MySelect from "../../common/form/MySelect";
 import MyMultiCheckboxes from "../../common/form/MyMultiCheckboxes";
+import MyImageUpload from "../../common/form/MyImageUpload";
 
 const genderOprtions = [
+  { value: "", text: "Select Gender" },
   { value: "men", text: "Men" },
   { value: "women", text: "Women" },
   { value: "kids", text: "Kids" },
 ];
 
 const categoryOprtions = [
+  { value: "", text: "Select Category" },
   { value: "t-shirts", text: "T-Shirts" },
   { value: "shirts", text: "Shirts" },
   { value: "jeans", text: "Jeans" },
@@ -42,35 +45,131 @@ const colorsOptions = [
   { name: "navy", checked: false },
 ];
 
+const initialState = {
+  name: "",
+  desc: "",
+  price: "",
+  taxRate: "",
+  deliveryCharges: "",
+  stock: "",
+  images: [],
+  category: "",
+  gender: "",
+  sizes: sizesOptions,
+  colors: colorsOptions,
+};
+
 function AddUpdateProducts() {
   const { id } = useParams();
-
+  const [formState, setFormState] = useState(initialState);
   const isAdd = id === "add";
+
+  function handleChange(e) {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  }
+
+  function handleCheck(e, field) {
+    const updatedField = formState[field].map((value) => {
+      if (value.name === e.target.name) {
+        return { ...value, checked: !value.checked };
+      }
+      return value;
+    });
+
+    setFormState({ ...formState, [field]: updatedField });
+  }
+
+  function handleUpload(e) {
+    console.log(Array.from(e.target.files));
+    setFormState({
+      ...formState,
+      images: [...formState.images, ...Array.from(e.target.files)],
+    });
+  }
+
+  function handleRemove(index) {
+    const updatedField = formState.images.filter((value, i) => {
+      if (i === index) {
+        return false;
+      }
+      return true;
+    });
+    setFormState({ ...formState, images: updatedField });
+  }
+
+  console.log("formState", formState);
 
   return (
     <div>
       <AdminPageTitle title={isAdd ? "Add Product" : "Update Product"} />
       <div>
         <form className="flex flex-col gap-2">
-          <MyInput name="name" />
-          <MyTextarea name="desc" label="Description" />
+          <MyInput name="name" value={formState.name} onChange={handleChange} />
+          <MyTextarea
+            name="desc"
+            label="Description"
+            value={formState.desc}
+            onChange={handleChange}
+          />
+          <MyImageUpload
+            name="images"
+            multiple={true}
+            onChange={handleUpload}
+            remove={handleRemove}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <MyInput name="price" />
-            <MyInput name="taxRate" label="Tax" type="number" />
+            <MyInput
+              name="price"
+              type="number"
+              value={formState.price}
+              onChange={handleChange}
+            />
+            <MyInput
+              name="taxRate"
+              label="Tax"
+              type="number"
+              value={formState.taxRate}
+              onChange={handleChange}
+            />
             <MyInput
               name="deliveryCharges"
               label="Delivery Charges"
               type="number"
+              value={formState.deliveryCharges}
+              onChange={handleChange}
             />
-            <MyInput name="stock" type="number" />
+            <MyInput
+              name="stock"
+              type="number"
+              value={formState.stock}
+              onChange={handleChange}
+            />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <MySelect name="gender" options={genderOprtions} />
-            <MySelect name="category" options={categoryOprtions} />
+            <MySelect
+              name="gender"
+              options={genderOprtions}
+              value={formState.gender}
+              onChange={handleChange}
+            />
+            <MySelect
+              name="category"
+              options={categoryOprtions}
+              value={formState.category}
+              onChange={handleChange}
+            />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <MyMultiCheckboxes label="Sizes" options={sizesOptions} />
-            <MyMultiCheckboxes label="Colors" options={colorsOptions} />
+            <MyMultiCheckboxes
+              label="Sizes"
+              options={formState.sizes}
+              onChange={handleCheck}
+            />
+            <MyMultiCheckboxes
+              label="Colors"
+              options={formState.colors}
+              onChange={handleCheck}
+            />
           </div>
           <Button type="submit">Submit</Button>
         </form>
