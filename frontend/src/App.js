@@ -23,6 +23,8 @@ import DashboardAdmin from "./components/admin/dashboardAdmin/DashboardAdmin";
 import OrdersListAdmin from "./components/admin/ordersListAdmin/OrdersListAdmin";
 import UsersListAdmin from "./components/admin/usersListAdmin/UsersListAdmin";
 import AddEditProductsAdmin from "./components/admin/productsListAdmin/AddEditProductsAdmin";
+import CategoriesListAdmin from "./components/admin/categoriesListAdmin/CategoriesListAdmin";
+import AddEditCategoriesAdmin from "./components/admin/categoriesListAdmin/AddEditCategoriesAdmin";
 
 function App() {
   return (
@@ -60,6 +62,8 @@ function App() {
             <Route path="dashboard" element={<DashboardAdmin />} />
             <Route path="products" element={<ProductsListAdmin />} />
             <Route path="products/:id" element={<AddEditProductsAdmin />} />
+            <Route path="categories" element={<CategoriesListAdmin />} />
+            <Route path="categories/:id" element={<AddEditCategoriesAdmin />} />
             <Route path="orders" element={<OrdersListAdmin />} />
             <Route path="users" element={<UsersListAdmin />} />
             <Route path="account" element={<AccountAdmin />} />

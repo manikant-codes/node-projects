@@ -11,11 +11,11 @@ import { logoutUser } from "../redux/slices/userSlice";
 function NavbarMain() {
   const [isOpen, setIsOpen] = useState();
   const user = useSelector((store) => {
-    return store.user;
+    return store.user.user;
   });
   const dispatch = useDispatch();
 
-  const isLoggedIn = user?.user;
+  const isLoggedIn = !!user;
 
   function handleToggle() {
     setIsOpen(!isOpen);
@@ -64,9 +64,9 @@ function NavbarMain() {
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">{user?.user?.name}</span>
+                <span className="block text-sm">{user.name}</span>
                 <span className="block truncate text-sm font-medium">
-                  {user?.user?.email}
+                  {user.email}
                 </span>
               </Dropdown.Header>
               {dropdownLinks.map((link) => {
@@ -76,12 +76,16 @@ function NavbarMain() {
                   </Dropdown.Item>
                 );
               })}
+              {user.role === "admin" && (
+                <Dropdown.Item key="admin-dashboard">
+                  <Link to="/admin/dashboard">Admin Dashboard</Link>
+                </Dropdown.Item>
+              )}
               <Dropdown.Divider />
               <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
             </Dropdown>
           )}
         </div>
-        <Navbar.Toggle />
       </div>
       <CartDrawer isOpen={isOpen} handleToggle={handleToggle} />
     </Navbar>

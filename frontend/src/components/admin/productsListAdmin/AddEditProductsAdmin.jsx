@@ -2,7 +2,14 @@ import { Button } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  colorsOptions,
+  getFormattedProductState,
+  getNamesArray,
+  sizesOptions,
+} from "../../../helpers/productsFormHelper";
+import {
   addProduct,
+  getAllCategories,
   getSingleProduct,
   updateProduct,
 } from "../../../services/apiServices";
@@ -12,15 +19,6 @@ import MyInput from "../../common/form/MyInput";
 import MyMultiCheckboxes from "../../common/form/MyMultiCheckboxes";
 import MySelect from "../../common/form/MySelect";
 import MyTextarea from "../../common/form/MyTextarea";
-import {
-  categoryOptions,
-  colorsOptions,
-  genderOptions,
-  getFormattedProductState,
-  getNamesArray,
-  sizesOptions,
-} from "../../../helpers/productsFormHelper";
-import MyUploadedImages from "../../common/form/MyUploadedImages";
 
 const initialState = {
   name: "",
@@ -30,8 +28,9 @@ const initialState = {
   taxRate: "",
   deliveryCharges: "",
   stock: "",
-  gender: "men",
-  category: "t-shirt",
+  category: "",
+  subCategory: "",
+  subSubCategory: "",
   sizes: sizesOptions,
   colors: colorsOptions,
 };
@@ -39,7 +38,8 @@ const initialState = {
 function AddEditProductsAdmin() {
   const { id } = useParams();
   const isAdd = id === "add";
-  const [formState, setFormState] = useState(initialState);
+  const [formState, setFormState] = useState(isAdd ? initialState : null);
+  const [categories, setCategories] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,6 +49,12 @@ function AddEditProductsAdmin() {
         setFormState(formattedProduct);
       });
     }
+  }, []);
+
+  useEffect(() => {
+    getAllCategories().then((data) => {
+      setCategories(data.data);
+    });
   }, []);
 
   async function handleSubmit(e) {
@@ -118,6 +124,31 @@ function AddEditProductsAdmin() {
     setFormState({ ...formState, images: updatedImages });
   }
 
+  if (!formState || !categories) return null;
+
+  const categoriesOptions = categories.map((value) => {
+    return { value: value.category };
+  });
+
+  const subCategoriesOptions = categories
+    .find((value) => {
+      return value?.category === formState?.category;
+    })
+    ?.subCategories.map((value) => {
+      return { value: value.category };
+    });
+
+  const subSubCategoriesOptions = categories
+    .find((value) => {
+      return value.category === formState.category;
+    })
+    ?.subCategories.find((value) => {
+      return value.category === formState.subCategory;
+    })
+    ?.subCategories.map((value) => {
+      return { value: value.category };
+    });
+
   return (
     <div>
       <div>
@@ -132,11 +163,13 @@ function AddEditProductsAdmin() {
             value={formState.desc}
             onChange={handleChange}
           />
-          <MyUploadedImages
+          <MyFileUpload
+            name="images"
             images={formState.images}
+            multiple={true}
+            onChange={handleChange}
             remove={handleRemoveImage}
           />
-          <MyFileUpload name="images" multiple={true} onChange={handleChange} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MyInput
               name="price"
@@ -165,17 +198,23 @@ function AddEditProductsAdmin() {
               onChange={handleChange}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <MySelect
-              name="gender"
-              options={genderOptions}
-              value={formState.gender}
+              name="category"
+              options={categoriesOptions}
+              value={formState.category}
               onChange={handleChange}
             />
             <MySelect
-              name="category"
-              options={categoryOptions}
-              value={formState.category}
+              name="subCategory"
+              options={subCategoriesOptions}
+              value={formState.subCategory}
+              onChange={handleChange}
+            />
+            <MySelect
+              name="subSubCategory"
+              options={subSubCategoriesOptions}
+              value={formState.subSubCategory}
               onChange={handleChange}
             />
           </div>
@@ -191,7 +230,9 @@ function AddEditProductsAdmin() {
               onChange={handleCheckChange}
             />
           </div>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" className="mt-8">
+            Submit
+          </Button>
         </form>
       </div>
     </div>

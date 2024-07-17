@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 const links = [
   { id: 1, name: "Dashboard", link: "/admin/dashboard" },
   { id: 2, name: "Products", link: "/admin/products" },
-  { id: 3, name: "Orders", link: "/admin/orders" },
-  { id: 4, name: "Users", link: "/admin/users" },
-  { id: 5, name: "Account", link: "/admin/account" },
-  { id: 6, name: "Log Out" },
+  { id: 3, name: "Categories", link: "/admin/categories" },
+  { id: 4, name: "Orders", link: "/admin/orders" },
+  { id: 5, name: "Users", link: "/admin/users" },
+  { id: 6, name: "Account", link: "/admin/account" },
+  { id: 7, name: "Log Out" },
 ];
 
 function SidebarAdmin() {

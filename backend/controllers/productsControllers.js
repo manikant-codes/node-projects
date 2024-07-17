@@ -8,11 +8,11 @@ const getAllProducts = async (req, res) => {
   try {
     const query = req.query;
     const filters = {};
-    if (query.gender) {
-      filters.gender = query.gender;
-    }
     if (query.category) {
       filters.category = query.category;
+    }
+    if (query.subCategory) {
+      filters.subCategory = query.subCategory;
     }
     const products = await Product.find({ ...filters });
     res.status(200).send({ success: true, data: products });

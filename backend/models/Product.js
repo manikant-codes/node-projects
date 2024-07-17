@@ -22,10 +22,10 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["t-shirt", "shirt", "jeans", "jackets", "shoes", "hoodies"],
     required: true,
   },
-  gender: { type: String, enum: ["men", "women", "kids"], required: true },
+  subCategory: { type: String, required: true },
+  subSubCategory: { type: String },
   stock: { type: Number, requried: true },
   sizes: {
     type: [String],

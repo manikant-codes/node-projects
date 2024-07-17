@@ -31,10 +31,10 @@ function resetPassword(data) {
 function getAllProducts(query) {
   let filters = [];
   if (query?.gender) {
-    filters.push(`gender=${query.gender}`);
+    filters.push(`category=${query.gender}`);
   }
   if (query?.category) {
-    filters.push(`category=${query.category}`);
+    filters.push(`subCategory=${query.category}`);
   }
   return fetchHelper(`${baseURL}/products?${filters.join("&")}`);
 }
@@ -63,6 +63,28 @@ async function deleteProduct(id) {
   return fetchHelper(`${baseURL}/products/${id}`, "DELETE");
 }
 
+// Categories
+
+async function getAllCategories() {
+  return fetchHelper(`${baseURL}/categories`);
+}
+
+async function getSingleCategory(id) {
+  return fetchHelper(`${baseURL}/categories/${id}`);
+}
+
+async function addCategory(data) {
+  return fetchHelper(`${baseURL}/categories`, "POST", data);
+}
+
+async function updateCategory(id, data) {
+  return fetchHelper(`${baseURL}/categories/${id}`, "PATCH", data);
+}
+
+async function deleteCategory(id) {
+  return fetchHelper(`${baseURL}/categories/${id}`, "DELETE");
+}
+
 export {
   register,
   verifyEmail,
@@ -75,4 +97,9 @@ export {
   addProduct,
   updateProduct,
   deleteProduct,
+  getAllCategories,
+  getSingleCategory,
+  addCategory,
+  updateCategory,
+  deleteCategory,
 };
