@@ -1,13 +1,32 @@
 import { Button } from "flowbite-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdminPageTitle from "../../common/AdminPageTitle";
 import { useNavigate } from "react-router-dom";
+import ProductsListItem from "./ProductsListItem";
+import { deleteProduct, getAllProducts } from "../../../services/apiServices";
 
 function ProductsListAdmin() {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getAllProducts().then((data) => {
+      setProducts(data.data);
+    });
+  }, []);
 
   function goToAddUpdateProducts() {
     navigate("/admin/products/add");
+  }
+
+  async function handleDelete(id) {
+    const input = window.confirm("Are you sure you want to delete this?");
+    if (input) {
+      await deleteProduct(id);
+      alert("Deleted successfully.");
+      const data = await getAllProducts();
+      setProducts(data.data);
+    }
   }
 
   return (
@@ -17,6 +36,17 @@ function ProductsListAdmin() {
         <Button className="h-fit" onClick={goToAddUpdateProducts}>
           Add Product
         </Button>
+      </div>
+      <div className="mt-8">
+        {products.map((value) => {
+          return (
+            <ProductsListItem
+              key={value._id}
+              product={value}
+              handleDelete={handleDelete}
+            />
+          );
+        })}
       </div>
     </div>
   );

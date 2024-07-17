@@ -62,6 +62,16 @@ const updateProduct = async (req, res) => {
     const body = req.body;
     const files = req.files?.images;
 
+    if (!body.images) {
+      body.images = [];
+    }
+    if (!body.sizes) {
+      body.sizes = [];
+    }
+    if (!body.colors) {
+      body.colors = [];
+    }
+
     const product = await Product.findById(id);
 
     if (!product) {

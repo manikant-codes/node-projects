@@ -1,49 +1,25 @@
-import { Button, Checkbox, Label, Select, Textarea } from "flowbite-react";
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Button } from "flowbite-react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  categoryOprtions,
+  colorsOptions,
+  genderOprtions,
+  getOptionsArray,
+  getValuesArray,
+  sizesOptions,
+} from "../../../helpers/productFormHelper";
+import {
+  addProduct,
+  getSingleProduct,
+  updateProduct,
+} from "../../../services/apiServices";
 import AdminPageTitle from "../../common/AdminPageTitle";
-import MyInput from "../../common/form/MyInput";
-import MyTextarea from "../../common/form/MyTextarea";
-import MySelect from "../../common/form/MySelect";
-import MyMultiCheckboxes from "../../common/form/MyMultiCheckboxes";
 import MyImageUpload from "../../common/form/MyImageUpload";
-
-const genderOprtions = [
-  { value: "", text: "Select Gender" },
-  { value: "men", text: "Men" },
-  { value: "women", text: "Women" },
-  { value: "kids", text: "Kids" },
-];
-
-const categoryOprtions = [
-  { value: "", text: "Select Category" },
-  { value: "t-shirts", text: "T-Shirts" },
-  { value: "shirts", text: "Shirts" },
-  { value: "jeans", text: "Jeans" },
-];
-
-const sizesOptions = [
-  { name: "xs", checked: false },
-  { name: "s", checked: false },
-  { name: "m", checked: false },
-  { name: "l", checked: false },
-  { name: "xl", checked: false },
-  { name: "xxl", checked: false },
-  { name: "xxxl", checked: false },
-];
-
-const colorsOptions = [
-  { name: "red", checked: false },
-  { name: "yellow", checked: false },
-  { name: "blue", checked: false },
-  { name: "purple", checked: false },
-  { name: "green", checked: false },
-  { name: "orange", checked: false },
-  { name: "crimson", checked: false },
-  { name: "turquoise", checked: false },
-  { name: "lavender", checked: false },
-  { name: "navy", checked: false },
-];
+import MyInput from "../../common/form/MyInput";
+import MyMultiCheckboxes from "../../common/form/MyMultiCheckboxes";
+import MySelect from "../../common/form/MySelect";
+import MyTextarea from "../../common/form/MyTextarea";
 
 const initialState = {
   name: "",
@@ -62,7 +38,18 @@ const initialState = {
 function AddUpdateProducts() {
   const { id } = useParams();
   const [formState, setFormState] = useState(initialState);
+  const navigate = useNavigate();
   const isAdd = id === "add";
+
+  useEffect(() => {
+    if (!isAdd) {
+      getSingleProduct(id).then((data) => {
+        data.data.sizes = getOptionsArray(data.data.sizes, "sizes");
+        data.data.colors = getOptionsArray(data.data.colors, "colors");
+        setFormState(data.data);
+      });
+    }
+  }, []);
 
   function handleChange(e) {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -97,13 +84,41 @@ function AddUpdateProducts() {
     setFormState({ ...formState, images: updatedField });
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const data = formState;
+    data.sizes = getValuesArray(data.sizes);
+    data.colors = getValuesArray(data.colors);
+
+    const formData = new FormData();
+
+    for (const key in data) {
+      if (typeof data[key] === "object") {
+        for (const value of data[key]) {
+          formData.append(key, value);
+        }
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+
+    if (isAdd) {
+      await addProduct(formData);
+    } else {
+      await updateProduct(formState._id, formData);
+    }
+
+    navigate("/admin/products");
+  }
+
   console.log("formState", formState);
 
   return (
     <div>
       <AdminPageTitle title={isAdd ? "Add Product" : "Update Product"} />
       <div>
-        <form className="flex flex-col gap-2">
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
           <MyInput name="name" value={formState.name} onChange={handleChange} />
           <MyTextarea
             name="desc"

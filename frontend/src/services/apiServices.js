@@ -1,5 +1,6 @@
 import { baseURL, fetchHelper } from "../helpers/fetchHelper";
 
+// Auth
 function register(data) {
   return fetchHelper(`${baseURL}/auth/register`, "POST", data);
 }
@@ -24,4 +25,50 @@ function resetPassword(data) {
   return fetchHelper(`${baseURL}/auth/reset-password`, "POST", data);
 }
 
-export { register, verifyEmail, login, logout, resetPassword, forgotPassword };
+// Products
+
+function getAllProducts() {
+  return fetchHelper(`${baseURL}/products`);
+}
+
+function getSingleProduct(id) {
+  return fetchHelper(`${baseURL}/products/${id}`);
+}
+
+async function addProduct(data) {
+  const response = await fetch(`${baseURL}/products`, {
+    body: data,
+    method: "POST",
+    credentials: "include",
+  });
+  const result = await response.json();
+  return result;
+}
+
+async function updateProduct(id, data) {
+  const response = await fetch(`${baseURL}/products/${id}`, {
+    body: data,
+    method: "PATCH",
+    credentials: "include",
+  });
+  const result = await response.json();
+  return result;
+}
+
+function deleteProduct(id) {
+  return fetchHelper(`${baseURL}/products/${id}`, "DELETE");
+}
+
+export {
+  register,
+  verifyEmail,
+  login,
+  logout,
+  resetPassword,
+  forgotPassword,
+  getAllProducts,
+  getSingleProduct,
+  addProduct,
+  updateProduct,
+  deleteProduct,
+};
