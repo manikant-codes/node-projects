@@ -6,7 +6,16 @@ const fs = require("fs/promises");
 const getAllProducts = async (req, res) => {
   try {
     // Filters
-    const products = await Product.find({});
+    const { gender, category } = req.query;
+    const filter = {};
+    if (gender) {
+      filter.gender = gender;
+    }
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await Product.find(filter);
     res.status(200).send({ success: true, data: products });
   } catch (error) {
     sendErrorResponse(res, error.message);
@@ -62,14 +71,24 @@ const updateProduct = async (req, res) => {
     const body = req.body;
     const files = req.files?.images;
 
+    console.log("body", body);
+
     if (!body.images) {
       body.images = [];
+    } else if (!Array.isArray(body.images)) {
+      body.images = [body.images];
     }
+
     if (!body.sizes) {
       body.sizes = [];
+    } else if (!Array.isArray(body.sizes)) {
+      body.sizes = [body.sizes];
     }
+
     if (!body.colors) {
       body.colors = [];
+    } else if (!Array.isArray(body.colors)) {
+      body.colors = [body.colors];
     }
 
     const product = await Product.findById(id);
@@ -78,13 +97,7 @@ const updateProduct = async (req, res) => {
       return sendErrorResponse(res, "No such product found.", 404);
     }
 
-    // Check if images have changed.
-    // Check for deleted images and delete them.
-    if (!body.images || !body.images.length) {
-      body.images = product.images || [];
-    }
-
-    if (body.images.length) {
+    if (product.images.length) {
       for (const img of product.images) {
         if (!body.images.includes(img)) {
           const deletePath = path.join(

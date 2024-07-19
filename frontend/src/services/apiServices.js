@@ -27,8 +27,15 @@ function resetPassword(data) {
 
 // Products
 
-function getAllProducts() {
-  return fetchHelper(`${baseURL}/products`);
+function getAllProducts(filters = {}) {
+  let queryStr = [];
+  if (filters.gender) {
+    queryStr.push(`gender=${filters.gender}`);
+  }
+  if (filters.category) {
+    queryStr.push(`category=${filters.category}`);
+  }
+  return fetchHelper(`${baseURL}/products?${queryStr.join("&")}`);
 }
 
 function getSingleProduct(id) {

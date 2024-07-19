@@ -12,7 +12,7 @@ function ProductsListItem({ product, handleDelete }) {
 
   return (
     <div className="flex items-center gap-2 py-2 border-b border-b-slate-300">
-      <div className="w-16 h-16 rounded-full border border-slate-300 overflow-hidden">
+      <div className="w-16 h-16 shrink-0 rounded-full border border-slate-300 overflow-hidden">
         <img
           src={product.images[0] || ""}
           alt=""

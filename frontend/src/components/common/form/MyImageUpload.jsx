@@ -9,10 +9,11 @@ function MyImageUpload({
   multiple = false,
   onChange,
   remove,
+  images,
   ...others
 }) {
   const labelText = label || getLabelFromName(name);
-  const [urls, setUrls] = useState([]);
+  const [urls, setUrls] = useState(images);
 
   function handleUpload(e) {
     const temp = [];

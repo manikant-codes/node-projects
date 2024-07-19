@@ -37,15 +37,16 @@ const initialState = {
 
 function AddUpdateProducts() {
   const { id } = useParams();
-  const [formState, setFormState] = useState(initialState);
-  const navigate = useNavigate();
   const isAdd = id === "add";
+  const [formState, setFormState] = useState(isAdd ? initialState : null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAdd) {
       getSingleProduct(id).then((data) => {
         data.data.sizes = getOptionsArray(data.data.sizes, "sizes");
         data.data.colors = getOptionsArray(data.data.colors, "colors");
+
         setFormState(data.data);
       });
     }
@@ -112,7 +113,9 @@ function AddUpdateProducts() {
     navigate("/admin/products");
   }
 
-  console.log("formState", formState);
+  if (!formState) return null;
+
+  // console.log("formState", formState);
 
   return (
     <div>
@@ -131,6 +134,7 @@ function AddUpdateProducts() {
             multiple={true}
             onChange={handleUpload}
             remove={handleRemove}
+            images={formState.images}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MyInput

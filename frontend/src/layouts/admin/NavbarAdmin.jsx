@@ -1,12 +1,11 @@
+import { Dropdown, Navbar } from "flowbite-react";
 import React, { useState } from "react";
+import { HiShoppingCart, HiUser } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../redux/slices/userSlice";
-import { Button, Dropdown, Navbar } from "flowbite-react";
-import { HiHeart, HiShoppingCart, HiUser } from "react-icons/hi";
-import { COMPANY_NAME } from "../../data/consts";
-import { dropdownLinks, navLinks } from "../../data/layout";
-import { Link } from "react-router-dom";
 import CartDrawer from "../../components/cart/CartDrawer";
+import { COMPANY_NAME } from "../../data/consts";
+import { logoutUser } from "../../redux/slices/userSlice";
+import { Link } from "react-router-dom";
 
 function NavbarAdmin() {
   const [isOpen, setIsOpen] = useState();
@@ -52,6 +51,9 @@ function NavbarAdmin() {
                 {user?.user?.email}
               </span>
             </Dropdown.Header>
+            <Dropdown.Item>
+              <Link to="/">Home</Link>
+            </Dropdown.Item>
             <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
           </Dropdown>
         </div>

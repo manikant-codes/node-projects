@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomBredcrumb from "../components/common/CustomBredcrumb";
 import ProductsListCard from "../components/productsList/ProductsListCard";
 import Filters from "../components/productsList/filters/Filters";
 import { Select } from "flowbite-react";
-import { products } from "../data/productsList";
+import { getAllProducts } from "../services/apiServices";
+import { useParams } from "react-router-dom";
 
 function ProductsList() {
+  const { gender, category } = useParams();
+  const [products, setProducts] = useState(null);
+
+  useEffect(() => {
+    getAllProducts({ gender, category }).then((data) => {
+      setProducts(data.data);
+    });
+  }, []);
+
+  if (!products) return null;
+
   return (
     <div>
       <div className="px-8 pt-8 flex flex-col gap-4">

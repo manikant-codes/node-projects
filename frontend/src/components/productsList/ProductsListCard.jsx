@@ -12,7 +12,7 @@ function ProductsListCard({ product }) {
   console.log("params", params);
 
   function goToDetails() {
-    navigate(`1`);
+    navigate(product._id);
   }
 
   function handleAddToCart(e) {
@@ -25,7 +25,7 @@ function ProductsListCard({ product }) {
       <div className="h-[200px] overflow-hidden">
         <img
           className="h-full w-full object-cover"
-          src={product.img}
+          src={product.images[0]}
           alt={product.name}
         />
       </div>
