@@ -23,6 +23,8 @@ import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
 import store from "./redux/store";
 import AddUpdateProducts from "./components/admin/productsListAdmin/AddUpdateProducts";
+import PagesListAdmin from "./components/admin/pagesListAdmin/PagesListAdmin";
+import AddUpdatePages from "./components/admin/pagesListAdmin/AddUpdatePages";
 
 function App() {
   return (
@@ -58,6 +60,8 @@ function App() {
           </Route>
           <Route path="/admin" element={<LayoutAdmin />}>
             <Route path="dashboard" element={<DashboardAdmin />} />
+            <Route path="pages" element={<PagesListAdmin />} />
+            <Route path="pages/:id" element={<AddUpdatePages />} />
             <Route path="products" element={<ProductsListAdmin />} />
             <Route path="products/:id" element={<AddUpdateProducts />} />
             <Route path="orders" element={<OrdersListAdmin />} />
