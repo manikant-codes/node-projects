@@ -4,11 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import AdminPageTitle from "../../common/AdminPageTitle";
 import MyImageUpload from "../../common/form/MyImageUpload";
 import MyInput from "../../common/form/MyInput";
+import CategoryInput from "./CategoryInput";
 
 const initialState = {
   name: "",
   carouselImages: [],
-  categories: [],
+  categories: [{ id: Date.now(), name: "", displayName: "", image: "" }],
 };
 
 function AddUpdatePages() {
@@ -17,6 +18,8 @@ function AddUpdatePages() {
   const [formState, setFormState] = useState(isAdd ? initialState : null);
   const navigate = useNavigate();
 
+  console.log("formState", formState);
+
   function handleChange(e) {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   }
@@ -24,26 +27,30 @@ function AddUpdatePages() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    let data = formState;
+
     const formData = new FormData();
 
-    let data = {};
-
-    for (const key in data) {
+    for (const key of data) {
+      if (key === "carouselImages") {
+        for (const value of data[key]) {
+          formData.append("carouselImages", value);
+        }
+      } else {
+        formData.append(key, data[key]);
+      }
     }
 
-    if (isAdd) {
-      //   await addProduct(formData);
-    } else {
-      //   await updateProduct(formState._id, formData);
-    }
-
-    navigate("/admin/pages");
+    console.log("data", data);
   }
 
   function handleUpload(e) {
     setFormState({
       ...formState,
-      images: [...formState.carouselImages, ...Array.from(e.target.files)],
+      carouselImages: [
+        ...formState.carouselImages,
+        ...Array.from(e.target.files),
+      ],
     });
   }
 
@@ -55,6 +62,57 @@ function AddUpdatePages() {
       return true;
     });
     setFormState({ ...formState, carouselImages: updatedField });
+  }
+
+  function handleAddCategory() {
+    setFormState({
+      ...formState,
+      categories: [
+        ...formState.categories,
+        { id: Date.now(), name: "", displayName: "", image: "" },
+      ],
+    });
+  }
+
+  function handleRemoveCategory(id) {
+    const newCategories = formState.categories.filter((value) => {
+      if (value.id === id) {
+        return false;
+      }
+      return true;
+    });
+
+    setFormState({ ...formState, categories: newCategories });
+  }
+
+  function handleCategoryChange(e, id) {
+    const updatedCategories = formState.categories.map((value) => {
+      if (value.id === id) {
+        return { ...value, [e.target.name]: e.target.value };
+      }
+      return value;
+    });
+    setFormState({ ...formState, categories: updatedCategories });
+  }
+
+  function handleCategoryImageUpload(e, id) {
+    const updatedCategories = formState.categories.map((value) => {
+      if (value.id === id) {
+        return { ...value, [e.target.name]: e.target.files };
+      }
+      return value;
+    });
+    setFormState({ ...formState, categories: updatedCategories });
+  }
+
+  function handleCategoryImageRemove(index, id) {
+    const updatedCategories = formState.categories.map((value) => {
+      if (value.id === id) {
+        return { ...value, image: "" };
+      }
+      return value;
+    });
+    setFormState({ ...formState, categories: updatedCategories });
   }
 
   return (
@@ -70,6 +128,21 @@ function AddUpdatePages() {
             remove={handleRemove}
             images={formState.carouselImages}
           />
+          <div className="flex justify-end">
+            <Button onClick={handleAddCategory}>Add Category</Button>
+          </div>
+          {formState.categories.map((value) => {
+            return (
+              <CategoryInput
+                onRemove={handleRemoveCategory}
+                value={value}
+                onChange={handleCategoryChange}
+                onUpload={handleCategoryImageUpload}
+                onImageRemove={handleCategoryImageRemove}
+              />
+            );
+          })}
+
           <Button type="submit">Submit</Button>
         </form>
       </div>
