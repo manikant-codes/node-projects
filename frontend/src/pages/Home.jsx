@@ -1,26 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CarouselHome from "../components/home/CarouselHome";
 import CategoriesRow from "../components/home/categoriesRow/CategoriesRow";
 import TrendingRow from "../components/home/trendingRow/TrendingRow";
-import {
-  getCarouselImages,
-  getCategories,
-  getTrendingProducts,
-} from "../helpers/homeHelper";
-import { Helmet } from "react-helmet";
+import { getSinglePage } from "../services/apiServices";
 
 function Home() {
   const params = useParams();
-  const carouselImages = getCarouselImages(params.gender);
-  const trendingProducts = getTrendingProducts(params.gender);
-  const categories = getCategories(params.gender);
+  const [page, setPage] = useState(null);
+
+  useEffect(() => {
+    getSinglePage(params.gender).then((data) => {
+      setPage(data?.data);
+    });
+  }, [params]);
+
+  console.log(page);
+
+  if (!page) return null;
 
   return (
     <>
-      <CarouselHome images={carouselImages} />
-      <TrendingRow products={trendingProducts} />
-      <CategoriesRow categories={categories} />
+      <CarouselHome images={page.carouselImages} />
+      <TrendingRow products={[]} />
+      <CategoriesRow categories={page.categories} />
     </>
   );
 }

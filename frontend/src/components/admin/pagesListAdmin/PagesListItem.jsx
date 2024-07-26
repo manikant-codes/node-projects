@@ -6,15 +6,18 @@ import { useNavigate } from "react-router-dom";
 function PagesListItem({ page, handleDelete }) {
   const navigate = useNavigate();
 
+  console.log("page", page);
+
   function handleEdit() {
     navigate(`/admin/pages/${page._id}`);
   }
+
   return (
     <div>
       <div className="flex items-center gap-2 py-2 border-b border-b-slate-300">
         <div className="w-16 h-16 shrink-0 rounded-full border border-slate-300 overflow-hidden">
           <img
-            src={page.carouselImages[0] || ""}
+            src={page?.carouselImages[0] || ""}
             alt=""
             className="h-full w-full object-cover"
           />

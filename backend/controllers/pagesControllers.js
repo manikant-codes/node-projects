@@ -1,6 +1,10 @@
 const Page = require("../models/Page");
 const { uploadAndGetImageURLs } = require("../utils/fileUploadUtils");
-const { sendErrorResponse, sendDataResponse } = require("../utils/serverUtils");
+const {
+  sendErrorResponse,
+  sendDataResponse,
+  sendSuccessResponse,
+} = require("../utils/serverUtils");
 
 const getAllPages = async (req, res) => {
   try {
@@ -26,6 +30,9 @@ const addPage = async (req, res) => {
     const body = req.body;
     const files = req.files;
 
+    body.categories = JSON.parse(body.categories);
+    // console.log("files", files);
+
     let carouselImages = [];
     let categoryImages = [];
 
@@ -38,10 +45,16 @@ const addPage = async (req, res) => {
       }
     }
 
-    // const carouselImages = await uploadAndGetImageURLs(files?.carouselImages);
-    // const categoryImages = await uploadAndGetImageURLs(files?.categories);
+    const categories = body.categories.map((value) => {
+      const img = categoryImages.find((v) => {
+        return v.category === value.name;
+      });
+      return { ...value, image: img?.image };
+    });
 
-    // await Page.create({});
+    await Page.create({ name: body.name, carouselImages, categories });
+
+    sendSuccessResponse(res, "Page added successfully.");
   } catch (error) {
     sendErrorResponse(res, error.message);
   }
@@ -56,6 +69,9 @@ const updatePage = async (req, res) => {
 
 const deletePage = async (req, res) => {
   try {
+    const { id } = req.params;
+    await Page.findByIdAndDelete(id);
+    sendSuccessResponse(res, "Page deleted successfully.");
   } catch (error) {
     sendErrorResponse(res, error.message);
   }

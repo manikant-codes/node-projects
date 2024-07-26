@@ -6,7 +6,7 @@ function CarouselHome({ images }) {
     <div className="h-[70vh]">
       <Carousel className="[&>div]:rounded-none">
         {images.map((img, index) => {
-          return <img key={index} src={img.url} alt={img.alt} />;
+          return <img key={index} src={img} alt={""} />;
         })}
       </Carousel>
     </div>

@@ -16,7 +16,7 @@ function CategoryInput({ value, onRemove, onChange, onUpload, onImageRemove }) {
         remove={(e) => {
           onImageRemove(e, value.id);
         }}
-        // images={formState.carouselImages}
+        images={[value.image]}
       />
       <MyInput
         name="name"

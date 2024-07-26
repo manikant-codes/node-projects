@@ -1,5 +1,5 @@
 import { Button, Dropdown, Navbar } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiHeart, HiShoppingCart, HiUser } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,10 +7,23 @@ import CartDrawer from "../components/cart/CartDrawer";
 import { COMPANY_NAME } from "../data/consts";
 import { dropdownLinks, dropdownUserInfo, navLinks } from "../data/layout";
 import { logoutUser } from "../redux/slices/userSlice";
+import { getAllPages } from "../services/apiServices";
 
 function NavbarMain() {
   const [isCartOpen, setCartIsOpen] = useState();
+  const [pages, setPages] = useState([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getAllPages().then((data) => {
+      setPages(
+        data?.data?.map((v) => {
+          return { name: v.name, id: v._id };
+        })
+      );
+    });
+  }, []);
+
   const user = useSelector((store) => {
     return store.user.user;
   });
@@ -33,9 +46,9 @@ function NavbarMain() {
           </span>
         </Navbar.Brand>
         <Navbar.Collapse>
-          {navLinks.map((link, index) => {
+          {pages.map((link, index) => {
             return (
-              <Link className="text-base" key={link.id} to={link.url}>
+              <Link className="text-base" key={link.id} to={link.id}>
                 {link.name}
               </Link>
             );

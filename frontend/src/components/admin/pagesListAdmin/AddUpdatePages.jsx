@@ -1,6 +1,11 @@
 import { Button } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  addPage,
+  getSinglePage,
+  updatePage,
+} from "../../../services/apiServices";
 import AdminPageTitle from "../../common/AdminPageTitle";
 import MyImageUpload from "../../common/form/MyImageUpload";
 import MyInput from "../../common/form/MyInput";
@@ -18,6 +23,16 @@ function AddUpdatePages() {
   const [formState, setFormState] = useState(isAdd ? initialState : null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isAdd) {
+      getSinglePage(id).then((data) => {
+        setFormState(data.data);
+      });
+    }
+  }, []);
+
+  if (!formState) return null;
+
   console.log("formState", formState);
 
   function handleChange(e) {
@@ -31,17 +46,32 @@ function AddUpdatePages() {
 
     const formData = new FormData();
 
-    for (const key of data) {
+    for (const key in data) {
       if (key === "carouselImages") {
         for (const value of data[key]) {
           formData.append("carouselImages", value);
         }
+      } else if (key === "categories") {
+        for (const value of data[key]) {
+          formData.append(value.name, value.image[0]);
+        }
+        let updatedCategories = data[key].map((value) => {
+          delete value.image;
+          return value;
+        });
+        formData.append("categories", JSON.stringify(updatedCategories));
       } else {
         formData.append(key, data[key]);
       }
     }
 
-    console.log("data", data);
+    if (isAdd) {
+      await addPage(formData);
+    } else {
+      await updatePage(formState._id, formData);
+    }
+
+    navigate("/admin/pages");
   }
 
   function handleUpload(e) {

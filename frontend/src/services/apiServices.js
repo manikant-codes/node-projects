@@ -66,6 +66,40 @@ function deleteProduct(id) {
   return fetchHelper(`${baseURL}/products/${id}`, "DELETE");
 }
 
+// Pages
+
+function getAllPages() {
+  return fetchHelper(`${baseURL}/pages`);
+}
+
+function getSinglePage(id) {
+  return fetchHelper(`${baseURL}/pages/${id}`);
+}
+
+async function addPage(data) {
+  const response = await fetch(`${baseURL}/pages`, {
+    body: data,
+    method: "POST",
+    credentials: "include",
+  });
+  const result = await response.json();
+  return result;
+}
+
+async function updatePage(id, data) {
+  const response = await fetch(`${baseURL}/pages/${id}`, {
+    body: data,
+    method: "PATCH",
+    credentials: "include",
+  });
+  const result = await response.json();
+  return result;
+}
+
+function deletePage(id) {
+  return fetchHelper(`${baseURL}/pages/${id}`, "DELETE");
+}
+
 export {
   register,
   verifyEmail,
@@ -78,4 +112,9 @@ export {
   addProduct,
   updateProduct,
   deleteProduct,
+  getAllPages,
+  getSinglePage,
+  addPage,
+  updatePage,
+  deletePage,
 };
