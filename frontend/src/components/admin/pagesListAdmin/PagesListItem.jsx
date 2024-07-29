@@ -9,7 +9,7 @@ function PagesListItem({ page, handleDelete }) {
   console.log("page", page);
 
   function handleEdit() {
-    navigate(`/admin/pages/${page._id}`);
+    navigate(`/admin/pages/${page.slug}`);
   }
 
   return (

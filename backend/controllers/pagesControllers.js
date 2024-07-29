@@ -17,8 +17,8 @@ const getAllPages = async (req, res) => {
 
 const getSinglePage = async (req, res) => {
   try {
-    const { id } = req.params;
-    const page = await Page.findById(id);
+    const { slug } = req.params;
+    const page = await Page.findOne({ slug: slug });
     sendDataResponse(res, page);
   } catch (error) {
     sendErrorResponse(res, error.message);
@@ -31,7 +31,6 @@ const addPage = async (req, res) => {
     const files = req.files;
 
     body.categories = JSON.parse(body.categories);
-    // console.log("files", files);
 
     let carouselImages = [];
     let categoryImages = [];
@@ -52,7 +51,12 @@ const addPage = async (req, res) => {
       return { ...value, image: img?.image };
     });
 
-    await Page.create({ name: body.name, carouselImages, categories });
+    await Page.create({
+      name: body.name,
+      carouselImages,
+      categories,
+      slug: body.slug,
+    });
 
     sendSuccessResponse(res, "Page added successfully.");
   } catch (error) {

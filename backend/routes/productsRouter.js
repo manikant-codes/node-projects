@@ -11,9 +11,11 @@ const {
   addProduct,
   updateProduct,
   deleteProduct,
+  getTrendingProducts,
 } = require("../controllers/productsControllers");
 
 productsRouter.get("/", getAllProducts);
+productsRouter.get("/trending/:slug", getTrendingProducts);
 productsRouter.get("/:id", getSingleProduct);
 productsRouter.post("/", authMiddleware, isAdminMiddleware, addProduct);
 productsRouter.patch("/:id", updateProduct);

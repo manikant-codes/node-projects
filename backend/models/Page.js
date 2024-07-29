@@ -16,7 +16,8 @@ const categorySchema = new mongoose.Schema({
 });
 
 const pageSchema = new mongoose.Schema({
-  name: { type: String, require: true },
+  name: { type: String, required: true },
+  slug: { type: String, required: true },
   carouselImages: {
     type: [String],
     validate: {

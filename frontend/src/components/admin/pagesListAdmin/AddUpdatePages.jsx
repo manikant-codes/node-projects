@@ -62,6 +62,7 @@ function AddUpdatePages() {
         formData.append("categories", JSON.stringify(updatedCategories));
       } else {
         formData.append(key, data[key]);
+        formData.append("slug", data[key].toLowerCase().replaceAll(" ", "-"));
       }
     }
 

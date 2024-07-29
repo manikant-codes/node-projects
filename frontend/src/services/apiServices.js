@@ -38,6 +38,10 @@ function getAllProducts(filters = {}) {
   return fetchHelper(`${baseURL}/products?${queryStr.join("&")}`);
 }
 
+function getTrendingProducts(slug) {
+  return fetchHelper(`${baseURL}/products/trending/${slug}`);
+}
+
 function getSingleProduct(id) {
   return fetchHelper(`${baseURL}/products/${id}`);
 }
@@ -117,4 +121,5 @@ export {
   addPage,
   updatePage,
   deletePage,
+  getTrendingProducts,
 };

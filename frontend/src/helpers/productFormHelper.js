@@ -1,11 +1,11 @@
-export const genderOprtions = [
+export const genderOptions = [
   { value: "", text: "Select Gender" },
   { value: "men", text: "Men" },
   { value: "women", text: "Women" },
   { value: "kids", text: "Kids" },
 ];
 
-export const categoryOprtions = [
+export const categoryOptions = [
   { value: "", text: "Select Category" },
   { value: "t-shirts", text: "T-Shirts" },
   { value: "shirts", text: "Shirts" },

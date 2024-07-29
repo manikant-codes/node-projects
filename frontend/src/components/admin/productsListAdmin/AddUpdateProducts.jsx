@@ -1,16 +1,15 @@
-import { Button } from "flowbite-react";
+import { Button, Checkbox } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  categoryOprtions,
   colorsOptions,
-  genderOprtions,
   getOptionsArray,
   getValuesArray,
   sizesOptions,
 } from "../../../helpers/productFormHelper";
 import {
   addProduct,
+  getAllPages,
   getSingleProduct,
   updateProduct,
 } from "../../../services/apiServices";
@@ -33,12 +32,14 @@ const initialState = {
   gender: "",
   sizes: sizesOptions,
   colors: colorsOptions,
+  isTrending: false,
 };
 
 function AddUpdateProducts() {
   const { id } = useParams();
   const isAdd = id === "add";
   const [formState, setFormState] = useState(isAdd ? initialState : null);
+  const [pages, setPages] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,6 +51,12 @@ function AddUpdateProducts() {
         setFormState(data.data);
       });
     }
+  }, []);
+
+  useEffect(() => {
+    getAllPages().then((data) => {
+      setPages(data.data);
+    });
   }, []);
 
   function handleChange(e) {
@@ -85,6 +92,10 @@ function AddUpdateProducts() {
     setFormState({ ...formState, images: updatedField });
   }
 
+  function handleTrendingChange(e) {
+    setFormState({ ...formState, [e.target.name]: e.target.checked });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -114,8 +125,25 @@ function AddUpdateProducts() {
   }
 
   if (!formState) return null;
+  if (!pages) return null;
 
-  // console.log("formState", formState);
+  const genderOptions = pages.map((v) => {
+    return { value: v.slug, text: v.name };
+  });
+
+  const allCategoryOptions = pages.map((v) => {
+    return {
+      page: v.slug,
+      options: v.categories.map((c) => {
+        return { value: c.name, text: c.displayName };
+      }),
+    };
+  });
+
+  const categoryOptions = allCategoryOptions.find(
+    (v) => v.page === formState.gender
+  ).options;
+  console.log("allCategoryOptions", allCategoryOptions);
 
   return (
     <div>
@@ -167,13 +195,13 @@ function AddUpdateProducts() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <MySelect
               name="gender"
-              options={genderOprtions}
+              options={genderOptions}
               value={formState.gender}
               onChange={handleChange}
             />
             <MySelect
               name="category"
-              options={categoryOprtions}
+              options={categoryOptions}
               value={formState.category}
               onChange={handleChange}
             />
@@ -188,6 +216,15 @@ function AddUpdateProducts() {
               label="Colors"
               options={formState.colors}
               onChange={handleCheck}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label htmlFor="isTrending">Is Trending</label>
+            <Checkbox
+              id="isTrending"
+              name="isTrending"
+              checked={formState.isTrending}
+              onChange={handleTrendingChange}
             />
           </div>
           <Button type="submit">Submit</Button>

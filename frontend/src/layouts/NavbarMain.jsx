@@ -5,20 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CartDrawer from "../components/cart/CartDrawer";
 import { COMPANY_NAME } from "../data/consts";
-import { dropdownLinks, dropdownUserInfo, navLinks } from "../data/layout";
+import { dropdownLinks } from "../data/layout";
 import { logoutUser } from "../redux/slices/userSlice";
 import { getAllPages } from "../services/apiServices";
 
 function NavbarMain() {
   const [isCartOpen, setCartIsOpen] = useState();
   const [pages, setPages] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     getAllPages().then((data) => {
       setPages(
         data?.data?.map((v) => {
-          return { name: v.name, id: v._id };
+          return { name: v.name, id: v._id, slug: v.slug };
         })
       );
     });
@@ -48,7 +49,7 @@ function NavbarMain() {
         <Navbar.Collapse>
           {pages.map((link, index) => {
             return (
-              <Link className="text-base" key={link.id} to={link.id}>
+              <Link className="text-base" key={link.id} to={link.slug}>
                 {link.name}
               </Link>
             );

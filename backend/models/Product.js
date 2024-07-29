@@ -77,6 +77,7 @@ const productSchema = new mongoose.Schema({
     // },
     required: true,
   },
+  isTrending: { type: Boolean, default: false },
 });
 
 const Product = mongoose.model("Product", productSchema);

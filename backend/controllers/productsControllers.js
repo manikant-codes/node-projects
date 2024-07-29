@@ -22,6 +22,19 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+const getTrendingProducts = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const products = await Product.find({
+      gender: slug,
+      isTrending: true,
+    }).limit(10);
+    res.status(200).send({ success: true, data: products });
+  } catch (error) {
+    sendErrorResponse(res, error.message);
+  }
+};
+
 const getSingleProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -180,4 +193,5 @@ module.exports = {
   addProduct,
   updateProduct,
   deleteProduct,
+  getTrendingProducts,
 };
