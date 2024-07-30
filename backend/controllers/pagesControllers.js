@@ -1,4 +1,6 @@
 const Page = require("../models/Page");
+const fs = require("fs");
+const path = require("path");
 const { uploadAndGetImageURLs } = require("../utils/fileUploadUtils");
 const {
   sendErrorResponse,
@@ -74,7 +76,35 @@ const updatePage = async (req, res) => {
 const deletePage = async (req, res) => {
   try {
     const { id } = req.params;
-    await Page.findByIdAndDelete(id);
+    const page = await Page.findById(id);
+
+    const carouselImages = page.carouselImages;
+    const categoryImages = page.categories.map((v) => {
+      return v.image;
+    });
+
+    const carouselImagesFileNames = carouselImages.map((v) => {
+      return path.parse(v).base;
+    });
+    const categoryImagesFileNames = categoryImages.map((v) => {
+      return path.parse(v).base;
+    });
+
+    const deleteFilesList = carouselImagesFileNames.concat(
+      categoryImagesFileNames
+    );
+
+    const uploadsFilesList = fs.readdirSync(path.join(__dirname, "../uploads"));
+
+    for (const value of deleteFilesList) {
+      if (uploadsFilesList.includes(value)) {
+        fs.unlink();
+      }
+    }
+
+    console.log(">>> uploadsFilesList: ", uploadsFilesList);
+
+    // await Page.findByIdAndDelete(id);
     sendSuccessResponse(res, "Page deleted successfully.");
   } catch (error) {
     sendErrorResponse(res, error.message);
