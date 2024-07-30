@@ -44,6 +44,8 @@ function AddUpdatePages() {
 
     let data = formState;
 
+    console.log("data", data);
+
     const formData = new FormData();
 
     for (const key in data) {
@@ -53,7 +55,11 @@ function AddUpdatePages() {
         }
       } else if (key === "categories") {
         for (const value of data[key]) {
-          formData.append(value.name, value.image[0]);
+          if (typeof value.image === "string") {
+            formData.append(value.name, value.image);
+          } else {
+            formData.append(value.name, value.image[0]);
+          }
         }
         let updatedCategories = data[key].map((value) => {
           delete value.image;
@@ -61,8 +67,12 @@ function AddUpdatePages() {
         });
         formData.append("categories", JSON.stringify(updatedCategories));
       } else {
-        formData.append(key, data[key]);
-        formData.append("slug", data[key].toLowerCase().replaceAll(" ", "-"));
+        if (key === "name") {
+          formData.append(key, data[key]);
+        }
+        if (key === "slug") {
+          formData.append("slug", data[key].toLowerCase().replaceAll(" ", "-"));
+        }
       }
     }
 
@@ -72,7 +82,7 @@ function AddUpdatePages() {
       await updatePage(formState._id, formData);
     }
 
-    navigate("/admin/pages");
+    // navigate("/admin/pages");
   }
 
   function handleUpload(e) {
@@ -107,7 +117,7 @@ function AddUpdatePages() {
 
   function handleRemoveCategory(id) {
     const newCategories = formState.categories.filter((value) => {
-      if (value.id === id) {
+      if ((isAdd ? value.id : value._id) === id) {
         return false;
       }
       return true;
@@ -118,7 +128,7 @@ function AddUpdatePages() {
 
   function handleCategoryChange(e, id) {
     const updatedCategories = formState.categories.map((value) => {
-      if (value.id === id) {
+      if ((isAdd ? value.id : value._id) === id) {
         return { ...value, [e.target.name]: e.target.value };
       }
       return value;
@@ -128,7 +138,7 @@ function AddUpdatePages() {
 
   function handleCategoryImageUpload(e, id) {
     const updatedCategories = formState.categories.map((value) => {
-      if (value.id === id) {
+      if ((isAdd ? value.id : value._id) === id) {
         return { ...value, [e.target.name]: e.target.files };
       }
       return value;
@@ -138,7 +148,7 @@ function AddUpdatePages() {
 
   function handleCategoryImageRemove(index, id) {
     const updatedCategories = formState.categories.map((value) => {
-      if (value.id === id) {
+      if ((isAdd ? value.id : value._id) === id) {
         return { ...value, image: "" };
       }
       return value;

@@ -14,17 +14,20 @@
 - colors: [string]
 
 
-# update product
+# update page
 
-- fields other than image
-    - update the record
-- images    
-    - only added new images
-        - images [url, url, file]
-            - file url
-            - images [url, url, url]
-    - deleted old and added new images
-        - images [url, file]
-            - file url
-            - images [url, url, url]
+- name
+- category name and display name
+- carousel images
+    - added
+    - delete
+- category images
+    - old removed new added
+
+- for old urls
+    - check with urls in the db
+- for new files
+    - add to fs and to db
+
+
 
