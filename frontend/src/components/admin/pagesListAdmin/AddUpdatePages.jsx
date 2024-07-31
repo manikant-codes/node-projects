@@ -13,6 +13,7 @@ import CategoryInput from "./CategoryInput";
 
 const initialState = {
   name: "",
+  slug: "",
   carouselImages: [],
   categories: [{ id: Date.now(), name: "", displayName: "", image: "" }],
 };
@@ -33,59 +34,15 @@ function AddUpdatePages() {
 
   if (!formState) return null;
 
-  console.log("formState", formState);
-
-  function handleChange(e) {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
+  function handleNameChange(e) {
+    setFormState({
+      ...formState,
+      [e.target.name]: e.target.value,
+      slug: e.target.value.toLowerCase().replaceAll(" ", "-"),
+    });
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    let data = formState;
-
-    console.log("data", data);
-
-    const formData = new FormData();
-
-    for (const key in data) {
-      if (key === "carouselImages") {
-        for (const value of data[key]) {
-          formData.append("carouselImages", value);
-        }
-      } else if (key === "categories") {
-        for (const value of data[key]) {
-          if (typeof value.image === "string") {
-            formData.append(value.name, value.image);
-          } else {
-            formData.append(value.name, value.image[0]);
-          }
-        }
-        let updatedCategories = data[key].map((value) => {
-          delete value.image;
-          return value;
-        });
-        formData.append("categories", JSON.stringify(updatedCategories));
-      } else {
-        if (key === "name") {
-          formData.append(key, data[key]);
-        }
-        if (key === "slug") {
-          formData.append("slug", data[key].toLowerCase().replaceAll(" ", "-"));
-        }
-      }
-    }
-
-    if (isAdd) {
-      await addPage(formData);
-    } else {
-      await updatePage(formState._id, formData);
-    }
-
-    // navigate("/admin/pages");
-  }
-
-  function handleUpload(e) {
+  function handleCarouselImagesUpload(e) {
     setFormState({
       ...formState,
       carouselImages: [
@@ -95,14 +52,16 @@ function AddUpdatePages() {
     });
   }
 
-  function handleRemove(index) {
-    const updatedField = formState.carouselImages.filter((value, i) => {
-      if (i === index) {
-        return false;
+  function handleCarouselImagesRemove(deleteIndex) {
+    const updatedCarouselImages = formState.carouselImages.filter(
+      (value, index) => {
+        if (index === deleteIndex) {
+          return false;
+        }
+        return true;
       }
-      return true;
-    });
-    setFormState({ ...formState, carouselImages: updatedField });
+    );
+    setFormState({ ...formState, carouselImages: updatedCarouselImages });
   }
 
   function handleAddCategory() {
@@ -115,20 +74,20 @@ function AddUpdatePages() {
     });
   }
 
-  function handleRemoveCategory(id) {
-    const newCategories = formState.categories.filter((value) => {
-      if ((isAdd ? value.id : value._id) === id) {
+  function handleRemoveCategory(deleteId) {
+    const updatedCategories = formState.categories.filter((value) => {
+      if ((isAdd ? value.id : value._id) === deleteId) {
         return false;
       }
       return true;
     });
 
-    setFormState({ ...formState, categories: newCategories });
+    setFormState({ ...formState, categories: updatedCategories });
   }
 
-  function handleCategoryChange(e, id) {
+  function handleChangeCategory(e, updateId) {
     const updatedCategories = formState.categories.map((value) => {
-      if ((isAdd ? value.id : value._id) === id) {
+      if ((isAdd ? value.id : value._id) === updateId) {
         return { ...value, [e.target.name]: e.target.value };
       }
       return value;
@@ -136,9 +95,9 @@ function AddUpdatePages() {
     setFormState({ ...formState, categories: updatedCategories });
   }
 
-  function handleCategoryImageUpload(e, id) {
+  function handleCategoryImageUpload(e, updateId) {
     const updatedCategories = formState.categories.map((value) => {
-      if ((isAdd ? value.id : value._id) === id) {
+      if ((isAdd ? value.id : value._id) === updateId) {
         return { ...value, [e.target.name]: e.target.files };
       }
       return value;
@@ -146,9 +105,9 @@ function AddUpdatePages() {
     setFormState({ ...formState, categories: updatedCategories });
   }
 
-  function handleCategoryImageRemove(index, id) {
+  function handleCategoryImageRemove(e, deleteId) {
     const updatedCategories = formState.categories.map((value) => {
-      if ((isAdd ? value.id : value._id) === id) {
+      if ((isAdd ? value.id : value._id) === deleteId) {
         return { ...value, image: "" };
       }
       return value;
@@ -156,17 +115,69 @@ function AddUpdatePages() {
     setFormState({ ...formState, categories: updatedCategories });
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const data = formState;
+
+    const formData = new FormData();
+
+    console.log("data", data);
+
+    for (const key in data) {
+      if (key === "carouselImages") {
+        for (const value of data[key]) {
+          formData.append("carouselImages", value);
+        }
+      } else if (key === "categories") {
+        for (const value of data[key]) {
+          if (typeof value.image === "string") {
+            formData.append(value.name, value.image);
+          } else {
+            formData.append(value.name, Array.from(value.image)[0]);
+          }
+        }
+        let updatedCategories = data[key].map((value) => {
+          delete value.image;
+          return value;
+        });
+        formData.append("categories", JSON.stringify(updatedCategories));
+      } else {
+        if (key === "name") {
+          formData.append("name", data.name);
+        }
+        if (key === "slug") {
+          formData.append("slug", data.slug);
+        }
+      }
+    }
+
+    // console.log("formData", Array.from(formData.entries()));
+
+    if (isAdd) {
+      await addPage(formData);
+    } else {
+      await updatePage(formState._id, formData);
+    }
+
+    navigate("/admin/pages");
+  }
+
   return (
     <div>
       <AdminPageTitle title={isAdd ? "Add Page" : "Update Page"} />
       <div>
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-          <MyInput name="name" value={formState.name} onChange={handleChange} />
+          <MyInput
+            name="name"
+            value={formState.name}
+            onChange={handleNameChange}
+          />
           <MyImageUpload
             name="carouselImages"
             multiple={true}
-            onChange={handleUpload}
-            remove={handleRemove}
+            onChange={handleCarouselImagesUpload}
+            remove={handleCarouselImagesRemove}
             images={formState.carouselImages}
           />
           <div className="flex justify-end">
@@ -177,7 +188,7 @@ function AddUpdatePages() {
               <CategoryInput
                 onRemove={handleRemoveCategory}
                 value={value}
-                onChange={handleCategoryChange}
+                onChange={handleChangeCategory}
                 onUpload={handleCategoryImageUpload}
                 onImageRemove={handleCategoryImageRemove}
               />

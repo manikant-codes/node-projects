@@ -142,7 +142,7 @@ function AddUpdateProducts() {
 
   const categoryOptions = allCategoryOptions.find(
     (v) => v.page === formState.gender
-  ).options;
+  )?.options;
   console.log("allCategoryOptions", allCategoryOptions);
 
   return (

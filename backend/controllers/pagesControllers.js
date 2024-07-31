@@ -69,32 +69,41 @@ const addPage = async (req, res) => {
 const updatePage = async (req, res) => {
   try {
     const { id } = req.params;
+    const files = req.files;
     const body = req.body;
     body.categories = JSON.parse(body.categories);
-    const files = req.files;
+    if (!body.carouselImages) {
+      body.carouselImages = [];
+    }
+    if (body.carouselImages && !Array.isArray(body.carouselImages)) {
+      body.carouselImages = [body.carouselImages];
+    }
 
-    const page = await Page.findById(id);
+    const pageFromDB = await Page.findById(id);
 
-    if (!page) {
+    if (!pageFromDB) {
       return sendErrorResponse(res, "No such page found.");
     }
 
-    let carouselImages = [];
-    let categoryImages = [];
+    // console.log("body", body);
+    // console.log("files", files);
+
+    let updatedCarouselImages = [];
+    let updatedCategoryImages = [];
 
     if (files) {
       for (const key in files) {
         if (key === "carouselImages") {
-          carouselImages = await uploadAndGetImageURLs(files[key]);
+          updatedCarouselImages = await uploadAndGetImageURLs(files[key]);
         } else {
           const temp = await uploadAndGetImageURLs(files[key]);
-          categoryImages.push({ category: key, image: temp[0] });
+          updatedCategoryImages.push({ category: key, image: temp[0] });
         }
       }
     }
 
     // Check if any carousel image is removed and remove them from uploads folder.
-    for (const image of page.carouselImages) {
+    for (const image of pageFromDB.carouselImages) {
       if (!body.carouselImages.includes(image)) {
         await fs.unlink(
           path.join(__dirname, "../uploads", path.parse(image).base)
@@ -103,11 +112,12 @@ const updatePage = async (req, res) => {
     }
 
     // Check if any category image is removed and remove them from uploads folder.
-    let bodyCategoryImages = [];
-    const pagesCategoryImages = page.categories.map((value) => {
+
+    const pagesCategoryImages = pageFromDB.categories.map((value) => {
       return { category: value.name, image: value.image };
     });
 
+    let bodyCategoryImages = [];
     for (const key in body) {
       if (
         key !== "name" &&
@@ -131,7 +141,7 @@ const updatePage = async (req, res) => {
       }
     }
 
-    bodyCategoryImages = [...bodyCategoryImages, categoryImages];
+    bodyCategoryImages = [...bodyCategoryImages, ...updatedCategoryImages];
 
     const updatedCategories = body.categories.map((value) => {
       const objImage = bodyCategoryImages.find((v) => {
@@ -144,7 +154,7 @@ const updatePage = async (req, res) => {
       name: body.name,
       slug: body.slug,
       categories: updatedCategories,
-      carouselImages: [...body.carouselImages, ...carouselImages],
+      carouselImages: [...body.carouselImages, ...updatedCarouselImages],
     });
 
     sendSuccessResponse(res, "Page updated successfully.");
