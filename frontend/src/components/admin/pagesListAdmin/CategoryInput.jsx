@@ -14,10 +14,10 @@ function CategoryInput({ value, onRemove, onChange, onUpload, onImageRemove }) {
         name="image"
         containerClassName="grow-[1]"
         onChange={(e) => {
-          onUpload(e, isAdd ? value.id : value._id);
+          onUpload(e, isAdd ? value.id : value._id || value.id);
         }}
         remove={(e) => {
-          onImageRemove(e, isAdd ? value.id : value._id);
+          onImageRemove(e, isAdd ? value.id : value._id || value.id);
         }}
         images={[value.image]}
       />
@@ -26,7 +26,7 @@ function CategoryInput({ value, onRemove, onChange, onUpload, onImageRemove }) {
         containerClassName="grow-[1]"
         value={value.name}
         onChange={(e) => {
-          onChange(e, isAdd ? value.id : value._id);
+          onChange(e, isAdd ? value.id : value._id || value.id);
         }}
       />
       <MyInput
@@ -34,13 +34,14 @@ function CategoryInput({ value, onRemove, onChange, onUpload, onImageRemove }) {
         containerClassName="grow-[1]"
         value={value.displayName}
         onChange={(e) => {
-          onChange(e, isAdd ? value.id : value._id);
+          onChange(e, isAdd ? value.id : value._id || value.id);
         }}
       />
       <Button
         className="h-fit"
+        color="primary"
         onClick={() => {
-          onRemove(isAdd ? value.id : value._id);
+          onRemove(isAdd ? value.id : value._id || value.id);
         }}
       >
         <HiTrash />

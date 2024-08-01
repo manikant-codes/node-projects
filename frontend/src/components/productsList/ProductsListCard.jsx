@@ -54,7 +54,9 @@ function ProductsListCard({ product }) {
           <p className="text-3xl font-bold text-gray-900 dark:text-white pb-4">
             ${product.price}
           </p>
-          <Button onClick={handleAddToCart}>Add to cart</Button>
+          <Button onClick={handleAddToCart} size="sm" outline pill>
+            Add to cart
+          </Button>
         </div>
       </div>
     </div>

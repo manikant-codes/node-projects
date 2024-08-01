@@ -4,13 +4,14 @@ import ProductImages from "../components/productDetails/ProductImages";
 import ProductDescription from "../components/productDetails/ProductDescription";
 import { useParams } from "react-router-dom";
 import { getSingleProduct } from "../services/apiServices";
+import CustomBredcrumb from "../components/common/CustomBredcrumb";
 
 function ProductDetails() {
   const [product, setProduct] = useState(null);
-  const { product: productId } = useParams();
+  const params = useParams();
 
   useEffect(() => {
-    getSingleProduct(productId).then((data) => {
+    getSingleProduct(params.product).then((data) => {
       setProduct(data.data);
     });
   }, []);
@@ -19,7 +20,11 @@ function ProductDetails() {
 
   return (
     <div className="p-8">
-      <ProductDetailsBreadCrumb />
+      <div className="mb-8">
+        <CustomBredcrumb
+          links={[params.gender, params.category, params.product]}
+        />
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <ProductImages images={product.images} />
         <ProductDescription product={product} />

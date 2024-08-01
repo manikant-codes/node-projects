@@ -9,27 +9,13 @@ function Filters() {
     <div>
       <div className="flex items-center justify-between py-4">
         <h2>Filters</h2>
-        <Button>Clear All</Button>
+        <Button className="" size="xs" pill>
+          Clear All
+        </Button>
       </div>
       <CheckboxFilters
-        title="Categories"
-        categories={[
-          "Kalidar Kurtas",
-          "Straight Kurtas",
-          "A-line Kurtas",
-          "Anarkali Kurtas",
-          "Asymmetric Kurtas",
-        ]}
-      />
-      <CheckboxFilters
-        title="Brand"
-        categories={[
-          "Jaipur Kurti",
-          "Nykaa Fashion",
-          "PaisaWapas Blog",
-          "Cashaly",
-          "KALKI Fashion",
-        ]}
+        title="Size"
+        categories={["xs", "sm", "md", "lg", "xl", "xl", "xxl"]}
       />
       <CheckboxFilters
         title="Price"

@@ -31,7 +31,7 @@ function ProductDescription({ product }) {
           <div className="flex gap-2">
             {product.sizes.map((value, index) => {
               return (
-                <Button key={index} pill>
+                <Button className="min-w-[40px]" size="xs" key={index} pill>
                   {value}
                 </Button>
               );
@@ -40,8 +40,12 @@ function ProductDescription({ product }) {
         </div>
       </div>
       <div className="flex gap-2">
-        <Button pill>Add to Cart</Button>
-        <Button pill>Wish List</Button>
+        <Button pill size="sm">
+          Add to Cart
+        </Button>
+        <Button pill size="sm">
+          Wish List
+        </Button>
       </div>
     </div>
   );

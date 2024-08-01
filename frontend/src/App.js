@@ -25,52 +25,61 @@ import store from "./redux/store";
 import AddUpdateProducts from "./components/admin/productsListAdmin/AddUpdateProducts";
 import PagesListAdmin from "./components/admin/pagesListAdmin/PagesListAdmin";
 import AddUpdatePages from "./components/admin/pagesListAdmin/AddUpdatePages";
+import { Flowbite } from "flowbite-react";
 
 function App() {
+  const customTheme = {
+    button: {
+      base: "group relative flex items-stretch justify-center p-0.5 text-center font-medium transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none !bg-orange-500 !hover:bg-orange-600 !text-white",
+    },
+  };
+
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LayoutMain />}>
-            <Route index element={<Home />} />
-            <Route path=":gender" element={<Home />} />
-            <Route path=":gender/:category" element={<ProductsList />} />
-            <Route
-              path=":gender/:category/:product"
-              element={<ProductDetails />}
-            />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="wishlist" element={<Wishlist />} />
-            <Route path="verify-email" element={<VerifyEmail />} />
-            <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route
-              path="user"
-              element={
-                <UserAuthGuard>
-                  <LayoutUser />
-                </UserAuthGuard>
-              }
-            >
-              <Route path="profile" element={<Profile />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="address" element={<Address />} />
+    <Flowbite theme={{ theme: customTheme }}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LayoutMain />}>
+              <Route index element={<Home />} />
+              <Route path=":gender" element={<Home />} />
+              <Route path=":gender/:category" element={<ProductsList />} />
+              <Route
+                path=":gender/:category/:product"
+                element={<ProductDetails />}
+              />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="wishlist" element={<Wishlist />} />
+              <Route path="verify-email" element={<VerifyEmail />} />
+              <Route path="reset-password" element={<ResetPassword />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route
+                path="user"
+                element={
+                  <UserAuthGuard>
+                    <LayoutUser />
+                  </UserAuthGuard>
+                }
+              >
+                <Route path="profile" element={<Profile />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="address" element={<Address />} />
+              </Route>
             </Route>
-          </Route>
-          <Route path="/admin" element={<LayoutAdmin />}>
-            <Route path="dashboard" element={<DashboardAdmin />} />
-            <Route path="pages" element={<PagesListAdmin />} />
-            <Route path="pages/:id" element={<AddUpdatePages />} />
-            <Route path="products" element={<ProductsListAdmin />} />
-            <Route path="products/:id" element={<AddUpdateProducts />} />
-            <Route path="orders" element={<OrdersListAdmin />} />
-            <Route path="users" element={<UsersListAdmin />} />
-            <Route path="account" element={<AccountAdmin />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+            <Route path="/admin" element={<LayoutAdmin />}>
+              <Route path="dashboard" element={<DashboardAdmin />} />
+              <Route path="pages" element={<PagesListAdmin />} />
+              <Route path="pages/:id" element={<AddUpdatePages />} />
+              <Route path="products" element={<ProductsListAdmin />} />
+              <Route path="products/:id" element={<AddUpdateProducts />} />
+              <Route path="orders" element={<OrdersListAdmin />} />
+              <Route path="users" element={<UsersListAdmin />} />
+              <Route path="account" element={<AccountAdmin />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </Flowbite>
   );
 }
 
