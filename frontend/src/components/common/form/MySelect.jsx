@@ -8,7 +8,7 @@ function MySelect({ name, label, options, value = "", onChange }) {
     <div>
       <Label htmlFor={name}>{labelText}</Label>
       <Select id={name} name={name} value={value} onChange={onChange}>
-        {options.map((item, index) => {
+        {options?.map((item, index) => {
           return (
             <option key={index} value={item.value}>
               {item.text}
