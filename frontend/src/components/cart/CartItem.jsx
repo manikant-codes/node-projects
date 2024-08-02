@@ -2,13 +2,25 @@ import { Button } from "flowbite-react";
 import React from "react";
 import { HiMinus, HiPlus, HiTrash } from "react-icons/hi";
 import { useDispatch } from "react-redux";
-import { removeFromCart } from "../../redux/slices/cartSlice";
+import {
+  decreaseQty,
+  increaseQty,
+  removeFromCart,
+} from "../../redux/slices/cartSlice";
 
 function CartItem({ cartItem }) {
   const dispatch = useDispatch();
 
   function handleRemove() {
-    dispatch(removeFromCart(cartItem.id));
+    dispatch(removeFromCart(cartItem._id));
+  }
+
+  function handleIncreaseQty() {
+    dispatch(increaseQty(cartItem._id));
+  }
+
+  function handleDecreaseQty() {
+    dispatch(decreaseQty(cartItem._id));
   }
 
   return (
@@ -33,11 +45,11 @@ function CartItem({ cartItem }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button pill size="xs">
+          <Button onClick={handleDecreaseQty} pill size="xs">
             <HiMinus />
           </Button>
           <p>{cartItem.qty}</p>
-          <Button pill size="xs">
+          <Button onClick={handleIncreaseQty} pill size="xs">
             <HiPlus />
           </Button>
         </div>

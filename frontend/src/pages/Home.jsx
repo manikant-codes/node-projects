@@ -47,7 +47,9 @@ function Home() {
   return (
     <>
       <CarouselHome images={page.carouselImages} />
-      <TrendingRow products={trendingProducts} />
+      {trendingProducts && trendingProducts.length && (
+        <TrendingRow products={trendingProducts} />
+      )}
       <CategoriesRow categories={page.categories} />
     </>
   );

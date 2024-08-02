@@ -26,6 +26,7 @@ import AddUpdateProducts from "./components/admin/productsListAdmin/AddUpdatePro
 import PagesListAdmin from "./components/admin/pagesListAdmin/PagesListAdmin";
 import AddUpdatePages from "./components/admin/pagesListAdmin/AddUpdatePages";
 import { Flowbite } from "flowbite-react";
+import Checkout from "./pages/Cehckout";
 
 function App() {
   const customTheme = {
@@ -53,6 +54,7 @@ function App() {
               <Route path="verify-email" element={<VerifyEmail />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="checkout" element={<Checkout />} />
               <Route
                 path="user"
                 element={
