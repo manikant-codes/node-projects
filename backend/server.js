@@ -8,6 +8,7 @@ const usersRouter = require("./routes/usersRouter");
 const productsRouter = require("./routes/productsRouter");
 const pagesRouter = require("./routes/pagesRouter");
 const fileupload = require("express-fileupload");
+const ordersRouter = require("./routes/ordersRouter");
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/products", productsRouter);
 app.use("/pages", pagesRouter);
+app.use("/orders", ordersRouter);
 
 start(app);

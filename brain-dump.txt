@@ -14,20 +14,26 @@
 - colors: [string]
 
 
-# update page
-
-- name
-- category name and display name
-- carousel images
-    - added
-    - delete
-- category images
-    - old removed new added
-
-- for old urls
-    - check with urls in the db
-- for new files
-    - add to fs and to db
+{
+    "tax": 399,
+    "shippingFee": 499,
+    "items": [
+        {
+            "name": "accent chair",
+            "price": 2599,
+            "image": "",
+            "amount": 4,
+            "product": ""
+        },
+        {
+            "name": "accent bed",
+            "price": 2999,
+            "image": "",
+            "amount": 3,
+            "product": ""
+        }
+    ]
+}
 
 
 
