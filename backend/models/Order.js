@@ -4,7 +4,7 @@ const SingleOrderItem = new mongoose.Schema({
   name: { type: String, required: true },
   image: { type: String, required: true },
   price: { type: Number, required: true },
-  amount: { type: Number, required: true },
+  qty: { type: Number, required: true },
   product: {
     type: mongoose.Schema.ObjectId,
     ref: "Product",
@@ -18,7 +18,7 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    shippingFee: {
+    deliveryCharges: {
       type: Number,
       required: true,
     },
@@ -34,6 +34,7 @@ const OrderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["pending", "failed", "paid", "delivered", "cancelled"],
+      default: "pending",
     },
     user: {
       type: mongoose.Schema.ObjectId,

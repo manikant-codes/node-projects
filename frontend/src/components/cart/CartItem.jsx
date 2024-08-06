@@ -24,7 +24,7 @@ function CartItem({ cartItem }) {
   }
 
   return (
-    <div className="flex items-center gap-2 border-b border-cyan-200 pb-2">
+    <div className="flex items-center gap-2 border-b border-slate-300 pb-2">
       <div className="h-[48px] w-[48px] overflow-hidden rounded-full">
         <img
           src={cartItem.images[0]}
