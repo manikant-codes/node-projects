@@ -104,6 +104,15 @@ function deletePage(id) {
   return fetchHelper(`${baseURL}/pages/${id}`, "DELETE");
 }
 
+// Orders
+export function createOrder(data) {
+  return fetchHelper(`${baseURL}/orders`, "POST", data);
+}
+
+export function updateOrder(id, data) {
+  return fetchHelper(`${baseURL}/orders/${id}`, "PATCH", data);
+}
+
 export {
   register,
   verifyEmail,

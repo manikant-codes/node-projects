@@ -1,11 +1,18 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
-const { sendErrorResponse } = require("../utils/serverUtils");
+const {
+  sendErrorResponse,
+  sendSuccessResponse,
+} = require("../utils/serverUtils");
+// This is your test secret API key.
+const stripe = require("stripe")(
+  "sk_test_51PkibDRobNkuNiWT8xGlwIgxJRLyydM96dG4Mhc0tZxzOd8uXUN24Ohiqc7XCWhRr0fTAcwvDwS8ygYxJ1Sa3Zrn00FG5pUes0"
+);
 
-const fakeStripeAPI = async () => {
-  const clientSecret = "someRandomValue";
-  return { clientSecret };
-};
+// const fakeStripeAPI = async () => {
+//   const clientSecret = "someRandomValue";
+//   return { clientSecret };
+// };
 
 const getAllOrders = async (req, res) => {
   res.send("getAllOrders");
@@ -23,7 +30,7 @@ const createOrder = async (req, res) => {
   try {
     const { cartItems } = req.body;
 
-    console.log("cartItems", cartItems);
+    console.log(cartItems);
 
     if (!cartItems || !cartItems.length) {
       return sendErrorResponse(res, "Cart items are required!");
@@ -56,7 +63,15 @@ const createOrder = async (req, res) => {
     }
 
     const total = subtotal + tax + deliveryCharges;
-    const clientSecret = await fakeStripeAPI();
+    // const clientSecret = await fakeStripeAPI();
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: total * 100,
+      currency: "inr",
+      // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
 
     const order = await Order.create({
       tax,
@@ -65,17 +80,29 @@ const createOrder = async (req, res) => {
       total,
       orderItems,
       user: req.user.userId,
-      clientSecret: clientSecret.clientSecret,
+      clientSecret: paymentIntent.client_secret,
     });
 
-    res.status(200).json({ success: true, order: order });
+    res.status(200).json({
+      success: true,
+      order: order,
+      clientSecret: paymentIntent.client_secret,
+    });
   } catch (error) {
     sendErrorResponse(res, error.message);
   }
 };
 
 const updateOrder = async (req, res) => {
-  res.send("updateOrder");
+  const { id } = req.params;
+  const { paymentIntentId } = req.body;
+  console.log("req.body", req.body);
+  try {
+    await Order.findByIdAndUpdate(id, { paymentIntentId, status: "paid" });
+    sendSuccessResponse(res, "Order updated successfully.");
+  } catch (error) {
+    sendErrorResponse(res, error.message);
+  }
 };
 
 module.exports = {
