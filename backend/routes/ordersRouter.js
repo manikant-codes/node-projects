@@ -6,7 +6,7 @@ const {
   getCurrentUserOrders,
   getSingleOrder,
   updateOrder,
-} = require("../controllers/ordersControllers");
+} = require("../controllers/ordersControllersRevised");
 const {
   authMiddleware,
   isAdminMiddleware,

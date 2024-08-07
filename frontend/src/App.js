@@ -26,7 +26,7 @@ import AddUpdateProducts from "./components/admin/productsListAdmin/AddUpdatePro
 import PagesListAdmin from "./components/admin/pagesListAdmin/PagesListAdmin";
 import AddUpdatePages from "./components/admin/pagesListAdmin/AddUpdatePages";
 import { Flowbite } from "flowbite-react";
-import Checkout from "./pages/Cehckout";
+import Checkout from "./pages/Checkout";
 
 function App() {
   const customTheme = {

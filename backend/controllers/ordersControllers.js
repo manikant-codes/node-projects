@@ -16,6 +16,7 @@ const getAllOrders = async (req, res) => {
   if (!cartItems || cartItems.length < 0) {
     return sendErrorResponse(res, "No cart items provided.", 400);
   }
+
   if (!tax || !shippingFee) {
     return sendErrorResponse(res, "No tax or shipping-fee provided.", 400);
   }
@@ -43,6 +44,7 @@ const getAllOrders = async (req, res) => {
   }
 
   const total = tax + shippingFee + subTotal;
+
   // Gett Client Secret
   const paymentIntent = await stripe.paymentIntents.create({
     amount: total,
@@ -69,15 +71,19 @@ const getAllOrders = async (req, res) => {
 
   res.status(200).json({ order, clientSecret: paymentIntent.client_secret });
 };
+
 const getSingleOrder = async (req, res) => {
   res.send("getSingleOrder");
 };
+
 const getCurrentUserOrders = async (req, res) => {
   res.send("getCurrentUserOrders");
 };
+
 const createOrder = async (req, res) => {
   res.send("createOrder");
 };
+
 const updateOrder = async (req, res) => {
   res.send("updateOrder");
 };

@@ -106,6 +106,9 @@ const updateProduct = async (req, res) => {
 
     const product = await Product.findById(id);
 
+    const pathToUploadsFolder = path.join(__dirname, "../uploads");
+    const filesInUploadsFolder = await fs.readdir(pathToUploadsFolder);
+
     if (!product) {
       return sendErrorResponse(res, "No such product found.", 404);
     }
@@ -113,12 +116,15 @@ const updateProduct = async (req, res) => {
     if (product.images.length) {
       for (const img of product.images) {
         if (!body.images.includes(img)) {
-          const deletePath = path.join(
-            __dirname,
-            "../uploads",
-            path.basename(img)
-          );
-          await fs.unlink(deletePath);
+          const baseName = path.parse(img).base;
+          if (filesInUploadsFolder.includes(baseName)) {
+            const deletePath = path.join(
+              __dirname,
+              "../uploads",
+              path.basename(img)
+            );
+            await fs.unlink(deletePath);
+          }
         }
       }
     }

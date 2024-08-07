@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CartSection from "../components/checkout/CartSection";
-import AddressSection from "../components/checkout/AddressSection";
 import PaymentSection from "../components/checkout/PaymentSection";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -35,7 +34,7 @@ function Checkout() {
   return (
     <div className="p-8">
       <CartSection />
-      <AddressSection />
+      {/* <AddressSection /> */}
       <PaymentSection />
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
