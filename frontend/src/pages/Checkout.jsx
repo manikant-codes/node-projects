@@ -5,9 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../components/checkout/CheckoutForm";
 
-const stripePromise = loadStripe(
-  "pk_test_51PkibDRobNkuNiWTnLsDWxNS6DMlBSLrrqEEghYCfNPPaH0WieQ6djZGkZBcmEzV4dIkcZsgZDAgaN5QQQEYjzJq002bl4dmhV"
-);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 function Checkout() {
   const [order, setOrder] = useState(null);

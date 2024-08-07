@@ -85,9 +85,6 @@ const updatePage = async (req, res) => {
       return sendErrorResponse(res, "No such page found.");
     }
 
-    // console.log("body", body);
-    // console.log("files", files);
-
     let updatedCarouselImages = [];
     let updatedCategoryImages = [];
 
@@ -105,7 +102,7 @@ const updatePage = async (req, res) => {
     const pathToUploadsFolder = path.join(__dirname, "../uploads");
     const filesInUploadsFolder = await fs.readdir(pathToUploadsFolder);
 
-    // Check if any carousel image is removed and remove them from uploads folder.
+    // Check if any carousel image is removed and remove them from the uploads folder.
     for (const image of pageFromDB.carouselImages) {
       if (!body.carouselImages.includes(image)) {
         if (filesInUploadsFolder.includes(path.parse(image).base)) {
@@ -116,7 +113,7 @@ const updatePage = async (req, res) => {
       }
     }
 
-    // Check if any category image is removed and remove them from uploads folder.
+    // Check if any category image is removed and remove them from the uploads folder.
     const pagesCategoryImages = pageFromDB.categories.map((value) => {
       return { category: value.name, image: value.image };
     });
