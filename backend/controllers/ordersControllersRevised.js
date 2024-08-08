@@ -4,7 +4,6 @@ const {
   sendErrorResponse,
   sendSuccessResponse,
 } = require("../utils/serverUtils");
-// This is your test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const getAllOrders = async (req, res) => {
@@ -54,7 +53,6 @@ const createOrder = async (req, res) => {
     }
 
     const total = subtotal + tax + deliveryCharges;
-    // const clientSecret = await fakeStripeAPI();
     const paymentIntent = await stripe.paymentIntents.create({
       amount: total * 100,
       currency: "inr",
@@ -87,7 +85,6 @@ const createOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   const { id } = req.params;
   const { paymentIntentId } = req.body;
-  // console.log("req.body", req.body);
   try {
     await Order.findByIdAndUpdate(id, { paymentIntentId, status: "paid" });
     sendSuccessResponse(res, "Order updated successfully.");
