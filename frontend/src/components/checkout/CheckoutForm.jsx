@@ -83,7 +83,7 @@ export default function CheckoutForm({ order }) {
       }
     }
 
-    await updateOrder(order._id, { paymentIntentId: result.id });
+    await updateOrder(order._id, { paymentIntentId: result.paymentIntent.id });
     setIsLoading(false);
     navigate("/user/orders");
   };

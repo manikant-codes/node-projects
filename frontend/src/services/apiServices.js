@@ -113,6 +113,14 @@ export function updateOrder(id, data) {
   return fetchHelper(`${baseURL}/orders/${id}`, "PATCH", data);
 }
 
+export function updateOrderStatus(id, data) {
+  return fetchHelper(`${baseURL}/orders/updateStatus/${id}`, "PATCH", data);
+}
+
+export function getUserOrders() {
+  return fetchHelper(`${baseURL}/orders/showAllMyOrders`);
+}
+
 export {
   register,
   verifyEmail,

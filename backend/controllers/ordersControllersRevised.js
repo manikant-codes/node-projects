@@ -3,6 +3,7 @@ const Product = require("../models/Product");
 const {
   sendErrorResponse,
   sendSuccessResponse,
+  sendDataResponse,
 } = require("../utils/serverUtils");
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
@@ -15,7 +16,12 @@ const getSingleOrder = async (req, res) => {
 };
 
 const getCurrentUserOrders = async (req, res) => {
-  res.send("getCurrentUserOrders");
+  try {
+    const orders = await Order.find({ user: req.user.userId });
+    sendDataResponse(res, orders);
+  } catch (error) {
+    return sendErrorResponse(res, error.message);
+  }
 };
 
 const createOrder = async (req, res) => {
@@ -83,10 +89,41 @@ const createOrder = async (req, res) => {
 };
 
 const updateOrder = async (req, res) => {
-  const { id } = req.params;
-  const { paymentIntentId } = req.body;
   try {
+    const { id } = req.params;
+    const { paymentIntentId } = req.body;
+
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return sendErrorResponse(res, "No such order found.");
+    }
+
     await Order.findByIdAndUpdate(id, { paymentIntentId, status: "paid" });
+    sendSuccessResponse(res, "Order updated successfully.");
+  } catch (error) {
+    sendErrorResponse(res, error.message);
+  }
+};
+
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return sendErrorResponse(res, "No such order found.");
+    }
+
+    if (order.status === "paid") {
+      if (status === "pending" || status === "failed") {
+        return sendErrorResponse(res, "Invalid status");
+      }
+    }
+
+    await Order.findByIdAndUpdate(id, { status });
     sendSuccessResponse(res, "Order updated successfully.");
   } catch (error) {
     sendErrorResponse(res, error.message);
@@ -99,4 +136,5 @@ module.exports = {
   getCurrentUserOrders,
   createOrder,
   updateOrder,
+  updateOrderStatus,
 };
