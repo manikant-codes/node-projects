@@ -1,13 +1,11 @@
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import React, { useState } from "react";
 import CartSection from "../components/checkout/CartSection";
-import PaymentSection from "../components/checkout/PaymentSection";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../components/checkout/CheckoutForm";
+import PaymentSection from "../components/checkout/PaymentSection";
 
-const stripePromise = loadStripe(
-  "pk_test_51PkibDRobNkuNiWTnLsDWxNS6DMlBSLrrqEEghYCfNPPaH0WieQ6djZGkZBcmEzV4dIkcZsgZDAgaN5QQQEYjzJq002bl4dmhV"
-);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 function Checkout() {
   const [order, setOrder] = useState(null);

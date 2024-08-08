@@ -22,8 +22,6 @@ function Home() {
     });
   }, [params]);
 
-  console.log(page);
-
   if (!page) return null;
 
   return (

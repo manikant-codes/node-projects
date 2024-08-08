@@ -5,14 +5,7 @@ const {
   sendSuccessResponse,
 } = require("../utils/serverUtils");
 // This is your test secret API key.
-const stripe = require("stripe")(
-  "sk_test_51PkibDRobNkuNiWT8xGlwIgxJRLyydM96dG4Mhc0tZxzOd8uXUN24Ohiqc7XCWhRr0fTAcwvDwS8ygYxJ1Sa3Zrn00FG5pUes0"
-);
-
-// const fakeStripeAPI = async () => {
-//   const clientSecret = "someRandomValue";
-//   return { clientSecret };
-// };
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const getAllOrders = async (req, res) => {
   res.send("getAllOrders");
@@ -29,8 +22,6 @@ const getCurrentUserOrders = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     const { cartItems } = req.body;
-
-    console.log(cartItems);
 
     if (!cartItems || !cartItems.length) {
       return sendErrorResponse(res, "Cart items are required!");
@@ -96,7 +87,7 @@ const createOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   const { id } = req.params;
   const { paymentIntentId } = req.body;
-  console.log("req.body", req.body);
+  // console.log("req.body", req.body);
   try {
     await Order.findByIdAndUpdate(id, { paymentIntentId, status: "paid" });
     sendSuccessResponse(res, "Order updated successfully.");

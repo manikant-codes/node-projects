@@ -122,8 +122,6 @@ function AddUpdatePages() {
 
     const formData = new FormData();
 
-    console.log("data", data);
-
     for (const key in data) {
       if (key === "carouselImages") {
         for (const value of data[key]) {
@@ -151,8 +149,6 @@ function AddUpdatePages() {
         }
       }
     }
-
-    // console.log("formData", Array.from(formData.entries()));
 
     if (isAdd) {
       await addPage(formData);

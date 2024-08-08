@@ -38,7 +38,7 @@ const getTrendingProducts = async (req, res) => {
 const getSingleProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
+
     const product = await Product.findById(id);
 
     if (!product) {
@@ -83,8 +83,6 @@ const updateProduct = async (req, res) => {
     const { id } = req.params;
     const body = req.body;
     const files = req.files?.images;
-
-    console.log("body", body);
 
     if (!body.images) {
       body.images = [];

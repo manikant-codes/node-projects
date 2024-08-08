@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import CustomBredcrumb from "../components/common/CustomBredcrumb";
 import ProductsListCard from "../components/productsList/ProductsListCard";
 import Filters from "../components/productsList/filters/Filters";
-import { Select } from "flowbite-react";
 import { getAllProducts } from "../services/apiServices";
-import { useParams } from "react-router-dom";
 
 function ProductsList() {
   const { gender, category } = useParams();
   const [products, setProducts] = useState(null);
   const params = useParams();
-
-  console.log(params);
 
   useEffect(() => {
     getAllProducts({ gender, category }).then((data) => {

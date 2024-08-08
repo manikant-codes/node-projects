@@ -85,9 +85,6 @@ const updatePage = async (req, res) => {
       return sendErrorResponse(res, "No such page found.");
     }
 
-    // console.log("body", body);
-    // console.log("files", files);
-
     let updatedCarouselImages = [];
     let updatedCategoryImages = [];
 

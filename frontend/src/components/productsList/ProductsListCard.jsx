@@ -1,15 +1,12 @@
-import { Button, Card } from "flowbite-react";
+import { Button } from "flowbite-react";
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../redux/slices/cartSlice";
 
 function ProductsListCard({ product }) {
   const navigate = useNavigate();
-  const params = useParams();
   const dispatch = useDispatch();
-
-  console.log("params", params);
 
   function goToDetails() {
     navigate(product._id);
