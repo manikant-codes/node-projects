@@ -1,5 +1,10 @@
 import { baseURL, fetchHelper } from "../helpers/fetchHelper";
 
+// User
+function getAllUsers() {
+  return fetchHelper(`${baseURL}/users`);
+}
+
 // Auth
 function register(data) {
   return fetchHelper(`${baseURL}/auth/register`, "POST", data);
@@ -117,6 +122,10 @@ export function updateOrderStatus(id, data) {
   return fetchHelper(`${baseURL}/orders/updateStatus/${id}`, "PATCH", data);
 }
 
+export function getAllOrders() {
+  return fetchHelper(`${baseURL}/orders`);
+}
+
 export function getUserOrders() {
   return fetchHelper(`${baseURL}/orders/showAllMyOrders`);
 }
@@ -139,4 +148,5 @@ export {
   updatePage,
   deletePage,
   getTrendingProducts,
+  getAllUsers,
 };

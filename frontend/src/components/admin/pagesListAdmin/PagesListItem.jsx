@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 function PagesListItem({ page, handleDelete }) {
   const navigate = useNavigate();
 
-  console.log("page", page);
-
   function handleEdit() {
     navigate(`/admin/pages/${page.slug}`);
   }

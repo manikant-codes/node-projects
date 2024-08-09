@@ -8,7 +8,12 @@ const {
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const getAllOrders = async (req, res) => {
-  res.send("getAllOrders");
+  try {
+    const orders = await Order.find();
+    sendDataResponse(res, orders);
+  } catch (error) {
+    sendErrorResponse(res, error.message);
+  }
 };
 
 const getSingleOrder = async (req, res) => {
