@@ -4,10 +4,11 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import RowTitle from "../../common/RowTitle";
 import TrendingCard from "./TrendingCard";
+import ProductsListCard from "../../productsList/ProductsListCard";
 
 const settings = {
   dots: true,
-  infinite: true,
+  infinite: false,
   speed: 500,
   slidesToShow: 4,
   slidesToScroll: 1,
@@ -15,17 +16,29 @@ const settings = {
 
 function TrendingRow({ products }) {
   if (!products) return null;
-  console.log("products", products);
+
   return (
-    <div className="w-full p-8">
+    <div className="p-8 w-full">
       <RowTitle title="Trending" />
-      {/* <Slider {...settings} className=""> */}
-      <div className="overflow-x-auto flex items-center gap-2">
-        {products.map((product) => {
-          return <TrendingCard key={product.id} product={product} />;
-        })}
+      <div>
+        <Slider {...settings}>
+          {products.map((value, index) => {
+            return (
+              <ProductsListCard
+                key={value.id}
+                product={value}
+                isTrendingCard
+                isLast={index === products.length - 1}
+              />
+              // <TrendingCard
+              //   key={value.id}
+              //   product={value}
+              //   isLast={index === products.length - 1}
+              // />
+            );
+          })}
+        </Slider>
       </div>
-      {/* </Slider> */}
     </div>
   );
 }

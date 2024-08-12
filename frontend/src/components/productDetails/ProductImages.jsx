@@ -2,11 +2,14 @@ import React from "react";
 
 function ProductImages({ images }) {
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="gap-2 grid grid-cols-2">
       {images.map((image, index) => {
         return (
-          <div key={index} className="h-[300px] overflow-hidden border">
-            <img src={image} alt="" className="h-full w-full object-cover" />;
+          <div
+            key={index}
+            className="border rounded-lg h-[320px] overflow-hidden"
+          >
+            <img src={image} alt="" className="w-full h-full object-cover" />;
           </div>
         );
       })}

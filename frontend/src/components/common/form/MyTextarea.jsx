@@ -5,7 +5,7 @@ import { getLabelFromName } from "../../../helpers/productsFormHelper";
 function MyTextarea({ name, label, value, onChange, ...others }) {
   const labelText = label || getLabelFromName(name);
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       <Label htmlFor={name}>{labelText}</Label>
       <Textarea
         id={name}

@@ -4,7 +4,7 @@ import OrdersList from "../../components/user/orders/OrdersList";
 
 function Orders() {
   return (
-    <div className="p-8">
+    <div>
       <UserPageTitle title="Orders" />
       <OrdersList />
     </div>

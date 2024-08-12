@@ -4,7 +4,7 @@ import ProfileForm from "../../components/user/profile/ProfileForm";
 
 function Profile() {
   return (
-    <div className="p-8">
+    <div>
       <UserPageTitle title="Profile" />
       <ProfileForm />
     </div>

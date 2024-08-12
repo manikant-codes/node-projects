@@ -4,7 +4,7 @@ import { HiHome } from "react-icons/hi";
 
 function CustomBredcrumb({ links }) {
   return (
-    <Breadcrumb aria-label="Default breadcrumb example">
+    <Breadcrumb aria-label="Breadcrumb" className="mb-8">
       <Breadcrumb.Item href="#" icon={HiHome}>
         home
       </Breadcrumb.Item>

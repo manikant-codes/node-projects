@@ -3,13 +3,17 @@ import React from "react";
 import CheckboxFilters from "./CheckboxFilters";
 import ColorLable from "./ColorLable";
 import { clothesColors } from "../../../data/productsList";
+import { HiFilter } from "react-icons/hi";
 
 function Filters() {
   return (
     <div>
-      <div className="flex items-center justify-between py-4">
-        <h2>Filters</h2>
-        <Button className="" size="xs" pill>
+      <div className="flex justify-between items-center py-4">
+        <h2 className="flex items-center gap-1 font-bold text-lg">
+          <HiFilter />
+          <span>Filters</span>
+        </h2>
+        <Button size="sm" pill>
           Clear All
         </Button>
       </div>

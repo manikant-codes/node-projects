@@ -4,9 +4,9 @@ import LayoutUserSideBar from "./LayoutUserSideBar";
 
 function LayoutUser() {
   return (
-    <div className="grid grid-cols-[200px_1fr]">
+    <div className="grid grid-cols-[256px_1fr]">
       <LayoutUserSideBar />
-      <div>
+      <div className="p-8">
         <Outlet />
       </div>
     </div>

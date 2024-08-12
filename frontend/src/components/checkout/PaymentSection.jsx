@@ -1,12 +1,29 @@
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "flowbite-react";
-import React from "react";
+import React, { useState } from "react";
+import { HiArrowRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { createOrder } from "../../services/apiServices";
+import CheckoutForm from "./CheckoutForm";
 
-function PaymentSection({ setClientSecret, setOrder }) {
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+
+function PaymentSection() {
+  const [order, setOrder] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
   const { cart } = useSelector((store) => {
     return store.cart;
   });
+
+  const appearance = {
+    theme: "stripe",
+  };
+
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   async function handleCheckout(e) {
     const cartItems = cart.map((value) => {
@@ -19,7 +36,15 @@ function PaymentSection({ setClientSecret, setOrder }) {
 
   return (
     <div className="mt-8">
-      <Button onClick={handleCheckout}>Proceed to Checkout</Button>
+      <Button color="accent" pill onClick={handleCheckout}>
+        Proceed to Checkout <HiArrowRight className="ml-2 w-5 h-5" />
+      </Button>
+
+      {clientSecret && (
+        <Elements options={options} stripe={stripePromise}>
+          <CheckoutForm order={order} />
+        </Elements>
+      )}
     </div>
   );
 }

@@ -1,26 +1,29 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function TrendingCard({ product }) {
-  const params = useParams();
+function TrendingCard({ product, isLast }) {
   const navigate = useNavigate();
 
   function goToDetails() {
+    // Change gender to page in model and database.
     navigate(`/${product.gender}/${product.category}/${product._id}`);
   }
 
   return (
-    <div className="h-[300px] max-w-[300px] mx-4 overflow-hidden relative border border-slate-400">
+    <div
+      className={`h-[320px] relative overflow-hidden cursor-pointer rounded-lg border border-slate-300 ${
+        isLast ? "mr-0" : "mr-3"
+      }`}
+      onClick={goToDetails}
+    >
       <img
         src={product.images[0]}
         alt="..."
-        className="w-full h-full object-cover"
+        className="object-top w-full h-full object-cover"
       />
-      <div
-        onClick={goToDetails}
-        className="absolute bottom-0 left-0 right-0 bg-white p-4"
-      >
-        {product.name} - ₹{product.price}
+      <div className="right-0 bottom-0 left-0 absolute flex justify-between items-center gap-4 bg-white p-4">
+        <p className="line-clamp-1 font-semibold">{product.name}</p>
+        <p className="font-semibold">₹{product.price}</p>
       </div>
     </div>
   );

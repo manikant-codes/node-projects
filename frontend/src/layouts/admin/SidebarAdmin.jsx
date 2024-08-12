@@ -2,25 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const links = [
-  { id: 1, name: "Dashboard", link: "/admin/dashboard" },
-  { id: 2, name: "Pages", link: "/admin/pages" },
-  { id: 2, name: "Products", link: "/admin/products" },
-  { id: 3, name: "Orders", link: "/admin/orders" },
-  { id: 4, name: "Users", link: "/admin/users" },
-  { id: 5, name: "Account", link: "/admin/account" },
-  { id: 6, name: "Log Out" },
+  { name: "Dashboard", to: "/admin/dashboard" },
+  { name: "Pages", to: "/admin/pages" },
+  { name: "Categories", to: "/admin/categories" },
+  { name: "Products", to: "/admin/products" },
+  { name: "Filters", to: "/admin/filters" },
+  { name: "Orders", to: "/admin/orders" },
+  { name: "Users", to: "/admin/users" },
+  { name: "Account", to: "/admin/account" },
+  { name: "Log Out" },
 ];
 
 function SidebarAdmin() {
   return (
-    <div className="border-r min-h-[calc(100vh-60px)] bg-slate-100">
+    <div className="border-r border-r-slate-300 min-h-[calc(100vh-60px)]">
       <ul>
-        {links.map((item) => {
+        {links.map((item, index) => {
           return (
-            <li key={item.id}>
+            <li key={index}>
               <Link
-                className="block p-4 border-b cursor-pointer hover:bg-orange-500 hover:text-white border-b-slate-300"
-                to={item.link}
+                className="block p-4 border-b border-b-slate-300 hover:text-primary cursor-pointer"
+                to={item.to}
               >
                 {item.name}
               </Link>

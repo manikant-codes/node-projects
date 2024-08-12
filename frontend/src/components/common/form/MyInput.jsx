@@ -13,7 +13,7 @@ function MyInput({
 }) {
   const labelText = label || getLabelFromName(name);
   return (
-    <div className={containerClassName}>
+    <div className={"flex flex-col gap-1 " + containerClassName}>
       <Label htmlFor={name}>{labelText}</Label>
       <TextInput
         id={name}

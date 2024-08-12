@@ -7,10 +7,14 @@ function CartSection() {
     return store.cart;
   });
   return (
-    <div>
+    <div className="border-slate-300 p-4 border rounded-lg">
       {cart.map((cartItem, index) => {
         return <CartItem key={index} cartItem={cartItem} />;
       })}
+      <div className="flex justify-between items-center mt-4">
+        <span className="font-semibold text-lg">Total:</span>
+        <span className="font-semibold text-lg">₹{total}</span>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
 function UserPageTitle({ title }) {
-  return <h2 className="text-3xl font-bold mb-8">{title}</h2>;
+  return <h2 className="mb-8 font-bold text-3xl">{title}</h2>;
 }
 
 export default UserPageTitle;

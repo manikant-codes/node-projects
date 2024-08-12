@@ -4,7 +4,7 @@ import AddressForm from "../../components/user/address/AddressForm";
 
 function Address() {
   return (
-    <div className="p-8">
+    <div>
       <UserPageTitle title="Address" />
       <AddressForm />
     </div>

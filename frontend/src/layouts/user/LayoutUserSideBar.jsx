@@ -3,22 +3,44 @@ import { HiLocationMarker, HiShoppingBag, HiUser } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 const links = [
-  { icon: <HiUser />, url: "/user/profile", name: "Profile" },
-  { icon: <HiLocationMarker />, url: "/user/address", name: "Address" },
-  { icon: <HiShoppingBag />, url: "/user/orders", name: "Orders" },
+  {
+    id: 1,
+    icon: <HiUser className="group-hover:text-primary text-gray-500 text-xl" />,
+    url: "/user/profile",
+    name: "Profile",
+  },
+  {
+    id: 2,
+    icon: (
+      <HiLocationMarker className="group-hover:text-primary text-gray-500 text-xl" />
+    ),
+    url: "/user/address",
+    name: "Address",
+  },
+  {
+    id: 3,
+    icon: (
+      <HiShoppingBag className="group-hover:text-primary text-gray-500 text-xl" />
+    ),
+    url: "/user/orders",
+    name: "Orders",
+  },
 ];
 
 function LayoutUserSideBar() {
   return (
-    <div className="p-8 border-r border-gray-300">
-      <ul className="flex flex-col gap-4">
+    <div className="border-gray-300 border-r">
+      <ul className="flex flex-col">
         {links.map((value, index) => {
           return (
             <li key={index} className="flex items-center gap-2">
-              <div className="[&>svg]:text-xl [&>svg]:text-gray-500">
+              <Link
+                to={value.url}
+                className="flex items-center gap-2 p-4 border-b border-b-slate-300 w-full hover:text-primary group"
+              >
                 {value.icon}
-              </div>
-              <Link to={value.url}>{value.name}</Link>
+                <span>{value.name}</span>
+              </Link>
             </li>
           );
         })}

@@ -35,8 +35,7 @@ function MyImageUpload({
   }
 
   return (
-    <div className={containerClassName}>
-      <Label htmlFor={name}>{labelText}</Label>
+    <div className={"flex flex-col gap-1 " + containerClassName}>
       <MyImagesPreview
         images={urls}
         remove={(index) => {
@@ -44,6 +43,7 @@ function MyImageUpload({
           handleRemove(index);
         }}
       />
+      <Label htmlFor={name}>{labelText}</Label>
       <TextInput
         id={name}
         name={name}

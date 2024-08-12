@@ -11,13 +11,13 @@ function Home() {
   const [trendingProducts, setTrendingProducts] = useState(null);
 
   useEffect(() => {
-    getSinglePage(params.gender || "home").then((data) => {
+    getSinglePage(params.page || "home").then((data) => {
       setPage(data?.data);
     });
   }, [params]);
 
   useEffect(() => {
-    getTrendingProducts(params.gender).then((data) => {
+    getTrendingProducts(params.page).then((data) => {
       setTrendingProducts(data?.data);
     });
   }, [params]);
